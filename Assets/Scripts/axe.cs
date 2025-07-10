@@ -7,7 +7,7 @@ public class axe : MonoBehaviour
 
     public GameObject player;
     private Transform playerTransform;
-    private kinght playerScript;
+    private knight playerScript;
 
     public float axeWeight = 0.7f;
     public float maxDistance = 0.5f;
@@ -22,10 +22,11 @@ public class axe : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerTransform = player.GetComponent<Transform>();
-        playerScript = player.GetComponent<kinght>();
+        playerScript = player.GetComponent<knight>();
         direction = playerTransform.position - transform.position;
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         lastAngle = angle;
+        playerTransform.GetComponent<knight>().onSwingAxe += AxeAttack;
     }
 
     // Update is called once per frame
@@ -33,13 +34,37 @@ public class axe : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            direction = playerTransform.position - transform.position;
+            // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
+            // angle += 0.01f;
             lastAngle = Mathf.MoveTowardsAngle(lastAngle, angle, rotationSpeed);
             rb.SetRotation(lastAngle - 42f);
-            ApplyRotationAndPull();
+            // ApplyRotationAndPull();
+            // FixedAxe();
+        }
+    }
+
+    void AxeAttack(float attackAngle)
+    {
+        direction = playerTransform.position - transform.position;
+        float distance = direction.magnitude;
+        float centerX = playerTransform.position.x;
+        float centerY = playerTransform.position.y;
+
+        float newX = centerX + distance * Mathf.Cos(attackAngle);
+        float newY = centerY + distance * Mathf.Sin(attackAngle);
+        Vector2 newPosition = new Vector2(newX, newY);
+        Debug.Log(newPosition);
+        rb.MovePosition(newPosition);
+
+    }
+
+    void FixedAxe()
+    {
+        float distance = direction.magnitude;
+        if (distance != maxDistance)
+        {
+            rb.MovePosition(playerTransform.position + new Vector3(-1f, -1f, 0f));
         }
     }
 
