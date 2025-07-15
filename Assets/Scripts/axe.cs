@@ -58,7 +58,7 @@ public class axe : MonoBehaviour
             rb.SetRotation(naturalAngle - 42f);
 
             float delta = Mathf.DeltaAngle(currentAngle, attackAngle);
-            bool reachedTarget = Mathf.Abs(delta) <= 3.5f || currentDistance <= minDistance;
+            bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
             if (reachedTarget)
             {
                 rotatingTimeElapsed = 0f;
@@ -82,7 +82,7 @@ public class axe : MonoBehaviour
     {
         rotatingTimeElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
-        float powt2 = Mathf.Pow(0.1f + t, 5f);
+        float powt2 = Mathf.Pow(0.2f + t, 6f);
         if (rotationDirection == 1) currentAngle -= powt2;
         else currentAngle += powt2;
         if ((currentAngle <= -180f && rotationDirection == 1) || (currentAngle >= 180f && rotationDirection == -1)) currentAngle *= -1;

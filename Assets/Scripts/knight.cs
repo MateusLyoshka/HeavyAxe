@@ -13,8 +13,10 @@ public class knight : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movement;
     private InputAction moveAction;
-    private InputAction attack;
+    private InputAction attackAction;
+    private InputAction dashAction;
 
+    private bool isDashing;
     private float mousePlayerAngle;
     private bool canMouseClick = true;
     private float axeWeight = 1f;
@@ -22,8 +24,9 @@ public class knight : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        dashAction = InputSystem.actions.FindAction("Sprint");
         moveAction = InputSystem.actions.FindAction("Move");
-        attack = InputSystem.actions.FindAction("Attack");
+        attackAction = InputSystem.actions.FindAction("Attack");
         rb = GetComponent<Rigidbody2D>();
         axeScript.AxeRotationStop += AxeRotationStop;
     }
@@ -38,7 +41,12 @@ public class knight : MonoBehaviour
     void Move()
     {
         movement = moveAction.ReadValue<Vector2>();
+        isDashing = dashAction.ReadValue<bool>();
         rb.linearVelocity = axeWeight * moveSpeed * movement.normalized;
+        if (isDashing)
+        {
+
+        }
     }
 
 
@@ -50,7 +58,7 @@ public class knight : MonoBehaviour
 
         Vector2 direction = mouseWorld - transform.position;
         mousePlayerAngle = Mathf.Atan2(direction.y, direction.x);
-        if (attack.WasPressedThisFrame() && canMouseClick)
+        if (attackAction.WasPressedThisFrame() && canMouseClick)
         {
             canMouseClick = false;
             onSwingAxe?.Invoke(mousePlayerAngle);

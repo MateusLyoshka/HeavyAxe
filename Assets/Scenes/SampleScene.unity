@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 687900178}
   - component: {fileID: 687900181}
   - component: {fileID: 687900180}
+  - component: {fileID: 687900182}
   m_Layer: 0
   m_Name: axe
   m_TagString: Untagged
@@ -453,7 +454,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9375, y: 0.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -489,9 +490,10 @@ MonoBehaviour:
   player: {fileID: 975009941}
   axeWeight: 0.5
   maxDistance: 2
-  rotationSpeed: 20
-  axeSpeed: 4
-  radius: 1.5
+  minDistance: 1.6
+  axePullSpeed: 4
+  axePushSpeed: 3.8
+  rotatingDuration: 0.2
 --- !u!50 &687900181
 Rigidbody2D:
   serializedVersion: 5
@@ -519,6 +521,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &687900182
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 687900177}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 330bf199ab0b3c14c909058d3e9a10f8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &816749284
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,6 +1589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  axeScript: {fileID: 687900180}
 --- !u!212 &975009944
 SpriteRenderer:
   m_ObjectHideFlags: 0
