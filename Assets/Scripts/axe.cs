@@ -12,12 +12,14 @@ public class axe : MonoBehaviour
     private Transform playerTransform;
     private knight playerScript;
 
-    public float axeWeight = 0.7f;
-    public float maxDistance = 1.6f;
-    public float minDistance = 1.6f;
-    public float axePullSpeed = 4f;
-    public float axePushSpeed = 10f;
-    public float rotatingDuration = 0.7f;
+    [SerializeField] private Animator _animator;
+
+    private float axeWeight = 0.7f;
+    private float maxDistance = 2f;
+    private float minDistance = 1f;
+    private float axePullSpeed = 4f;
+    private float rotatingDuration = 0.7f;
+    public bool playerCanAttack;
 
     // Full time variables
     private Vector2 direction;
@@ -30,7 +32,6 @@ public class axe : MonoBehaviour
     private float rotatingTimeElapsed;
     private bool isRotating = false;
     private float attackFixedDistance;
-    private bool playerCanAttack;
     private short rotationDirection = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,24 +50,15 @@ public class axe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Time.timeScale = 0.2f;
         naturalAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         direction = playerTransform.position - transform.position;
         currentDistance = direction.magnitude;
         if (isRotating)
         {
-            AxeRotationCalc();
+            AxeRotationProcess();
             rb.SetRotation(naturalAngle - 42f);
-
-            float delta = Mathf.DeltaAngle(currentAngle, attackAngle);
-            bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
-            if (reachedTarget)
-            {
-                rotatingTimeElapsed = 0f;
-                currentAngle = attackAngle;
-                rotationDirection *= -1;
-                AxeRotationStop?.Invoke(true);
-                isRotating = false;
-            }
+            AxeRotationEnd();
         }
         else
         {
@@ -78,7 +70,23 @@ public class axe : MonoBehaviour
 
     }
 
-    void AxeRotationCalc()
+    void AxeRotationEnd()
+    {
+        float delta = Mathf.DeltaAngle(currentAngle, attackAngle);
+        bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
+        if (reachedTarget)
+        {
+            _animator.SetTrigger("rotationTrigger");
+
+            rotatingTimeElapsed = 0f;
+            currentAngle = attackAngle;
+            rotationDirection *= -1;
+            AxeRotationStop?.Invoke(true);
+            isRotating = false;
+        }
+    }
+
+    void AxeRotationProcess()
     {
         rotatingTimeElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
@@ -97,6 +105,7 @@ public class axe : MonoBehaviour
     {
         if (playerCanAttack)
         {
+            _animator.SetTrigger("rotationTrigger");
             float attacktAngleDeg = attackAngle * Mathf.Rad2Deg;
             this.attackAngle = attacktAngleDeg;
             attackFixedDistance = direction.magnitude;
@@ -107,18 +116,15 @@ public class axe : MonoBehaviour
     void ApplyRotationAndPull()
     {
         rb.SetRotation(naturalAngle - 42f);
+        playerCanAttack = currentDistance > minDistance;
         if (currentDistance >= maxDistance)
         {
             rb.MovePosition(rb.position + axePullSpeed * Time.deltaTime * direction);
             playerScript.ApplyAxeWeight(axeWeight);
-            playerCanAttack = true;
         }
-        else if (currentDistance <= minDistance)
+        else
         {
-            playerCanAttack = false;
-            rb.MovePosition(rb.position + axePushSpeed * Time.deltaTime * -direction);
+            playerScript.ApplyAxeWeight(1f);
         }
-        else playerScript.ApplyAxeWeight(1f); playerCanAttack = true;
-
     }
 }

@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 7078f68597d2c154b9c6b5f6f70282aa
+guid: 8b691c23da4a9d94e9bfe38b063c8bfe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -312754031172712040
-    second: axeStop_0
-  - first:
-      213: 1314360368805565582
-    second: axeStop_1
-  - first:
-      213: -7715841842600889867
-    second: axeStop_2
-  - first:
-      213: 1457108308632650024
-    second: axeStop_3
+      213: -6504823532821062791
+    second: rightLanding_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -84,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -122,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: axeStop_0
+      name: rightLanding_0
       rect:
         serializedVersion: 2
         x: 2
@@ -130,81 +121,15 @@ TextureImporter:
         width: 30
         height: 30
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 89901ed9ddfd8abf0800000000000000
-      internalID: -312754031172712040
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: axeStop_1
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 2
-        width: 30
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e84d189aacb8d3210800000000000000
-      internalID: 1314360368805565582
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: axeStop_2
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 1
-        width: 30
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5f1bda479b2dbe490800000000000000
-      internalID: -7715841842600889867
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: axeStop_3
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 2
-        width: 30
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 821c15f5940b83410800000000000000
-      internalID: 1457108308632650024
+      spriteID: 97b599ff5793ab5a0800000000000000
+      internalID: -6504823532821062791
       vertices: []
       indices: 
       edges: []
@@ -213,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 15edeec08f093624db4ac6d23d2e2e17
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      axeStop_0: -312754031172712040
-      axeStop_1: 1314360368805565582
-      axeStop_2: -7715841842600889867
-      axeStop_3: 1457108308632650024
+      rightLanding_0: -6504823532821062791
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

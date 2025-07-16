@@ -16,7 +16,7 @@ public class knight : MonoBehaviour
     private InputAction attackAction;
     private InputAction dashAction;
 
-    private bool isDashing;
+    private float isDashing;
     private float mousePlayerAngle;
     private bool canMouseClick = true;
     private float axeWeight = 1f;
@@ -41,11 +41,11 @@ public class knight : MonoBehaviour
     void Move()
     {
         movement = moveAction.ReadValue<Vector2>();
-        isDashing = dashAction.ReadValue<bool>();
+        isDashing = dashAction.ReadValue<float>();
         rb.linearVelocity = axeWeight * moveSpeed * movement.normalized;
-        if (isDashing)
+        if (isDashing == 1)
         {
-
+            rb.linearVelocity = 5f * moveSpeed * movement.normalized;
         }
     }
 
@@ -58,7 +58,7 @@ public class knight : MonoBehaviour
 
         Vector2 direction = mouseWorld - transform.position;
         mousePlayerAngle = Mathf.Atan2(direction.y, direction.x);
-        if (attackAction.WasPressedThisFrame() && canMouseClick)
+        if (attackAction.WasPressedThisFrame() && canMouseClick && axeScript.playerCanAttack)
         {
             canMouseClick = false;
             onSwingAxe?.Invoke(mousePlayerAngle);

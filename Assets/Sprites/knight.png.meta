@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 1621789e2738bdb42b6467f6e7309365
+guid: ab328c764bd8b97428f70cc9a2b3bf8d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4821171709261312075
-    second: axeSwing_0
-  - first:
-      213: 3488888392126131600
-    second: axeSwing_1
-  - first:
-      213: -182866742807430477
-    second: axeSwing_2
+      213: 4495478712733764576
+    second: knight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -80,8 +74,8 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
-    textureCompression: 1
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,57 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: axeSwing_0
+      name: knight_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 30
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5bf0154cfd1c71db0800000000000000
-      internalID: -4821171709261312075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: axeSwing_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 1
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 09d69a9f1850b6030800000000000000
-      internalID: 3488888392126131600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: axeSwing_2
-      rect:
-        serializedVersion: 2
-        x: 63
+        x: 3
         y: 0
-        width: 33
-        height: 32
+        width: 10
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3bafab19aa3567df0800000000000000
-      internalID: -182866742807430477
+      spriteID: 0eb83d73216236e30800000000000000
+      internalID: 4495478712733764576
       vertices: []
       indices: 
       edges: []
@@ -198,9 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      axeSwing_0: -4821171709261312075
-      axeSwing_1: 3488888392126131600
-      axeSwing_2: -182866742807430477
+      knight_0: 4495478712733764576
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

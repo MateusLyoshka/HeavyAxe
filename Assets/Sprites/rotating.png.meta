@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b7062c8c583dcc840996342634925034
+guid: 0654193dfa3c11548a40fa0849e6685a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 26152980874489618
-    second: axeRotating_0
+      213: -2906651346136281957
+    second: rotating_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 4
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: axeRotating_0
+      name: rotating_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 21f67de5ff9ec5000800000000000000
-      internalID: 26152980874489618
+      spriteID: b9cc2a3300089a7d0800000000000000
+      internalID: -2906651346136281957
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      axeRotating_0: 26152980874489618
+      rotating_0: -2906651346136281957
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

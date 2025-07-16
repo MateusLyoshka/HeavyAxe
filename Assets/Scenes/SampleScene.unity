@@ -449,12 +449,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -5231155632006949979, guid: 17ab225eed748cf4c95b542b2ec57761, type: 3}
+  m_Sprite: {fileID: -5466278999152945028, guid: 5144342c46e42fc4db6aca1ff8ba51f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.9375, y: 0.9375}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -488,12 +488,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 975009941}
-  axeWeight: 0.5
-  maxDistance: 2
-  minDistance: 1.6
-  axePullSpeed: 4
-  axePushSpeed: 3.8
-  rotatingDuration: 0.2
+  _animator: {fileID: 687900182}
+  playerCanAttack: 0
 --- !u!50 &687900181
 Rigidbody2D:
   serializedVersion: 5
@@ -531,7 +527,7 @@ Animator:
   m_GameObject: {fileID: 687900177}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 330bf199ab0b3c14c909058d3e9a10f8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 516893e81646e1d4b9876e727921809a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
