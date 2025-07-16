@@ -28,7 +28,7 @@ public class knight : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         attackAction = InputSystem.actions.FindAction("Attack");
         rb = GetComponent<Rigidbody2D>();
-        axeScript.AxeRotationStop += AxeRotationStop;
+        axeScript.OnAxeRotationStop += AxeRotationStop;
     }
 
     // Update is called once per frame
