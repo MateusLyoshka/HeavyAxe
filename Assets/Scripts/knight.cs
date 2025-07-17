@@ -89,4 +89,10 @@ public class Knight : MonoBehaviour
     {
         return mousePlayerAngle;
     }
+
+    public void DamageReceive(float damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
+    }
 }

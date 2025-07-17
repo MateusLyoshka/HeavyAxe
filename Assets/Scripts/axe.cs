@@ -16,7 +16,7 @@ public class Axe : MonoBehaviour
 
     [SerializeField] private float axeWeight = 0.5f;
     [SerializeField] private float maxDistance = 4.5f;
-    [SerializeField] private float minDistance = 2.5f;
+    [SerializeField] private float minDistance = 2f;
     [SerializeField] private float axePullSpeed = 5f;
     [SerializeField] private float rotatingDuration = 0.8f;
     [SerializeField] public bool playerCanAttack;
