@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: ab328c764bd8b97428f70cc9a2b3bf8d
+guid: e0768d3e0f7fd5a469c5887b5957ad13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4495478712733764576
-    second: knight_0
+      213: -6781521760421773440
+    second: knightWalk_0
+  - first:
+      213: 1501092011238817127
+    second: knightWalk_1
+  - first:
+      213: -5786743373810716710
+    second: knightWalk_2
+  - first:
+      213: 6373642760713794325
+    second: knightWalk_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -74,7 +83,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
@@ -113,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: knight_0
+      name: knightWalk_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 0
-        width: 10
-        height: 16
+        x: 8
+        y: 2
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0eb83d73216236e30800000000000000
-      internalID: 4495478712733764576
+      spriteID: 08f7a7193e133e1a0800000000000000
+      internalID: -6781521760421773440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knightWalk_1
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 2
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76df0192b33f4d410800000000000000
+      internalID: 1501092011238817127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knightWalk_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 2
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adfaaad9f8b51bfa0800000000000000
+      internalID: -5786743373810716710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: knightWalk_3
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 2
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 513f595625ab37850800000000000000
+      internalID: 6373642760713794325
       vertices: []
       indices: 
       edges: []
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      knight_0: 4495478712733764576
+      knightWalk_0: -6781521760421773440
+      knightWalk_1: 1501092011238817127
+      knightWalk_2: -5786743373810716710
+      knightWalk_3: 6373642760713794325
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

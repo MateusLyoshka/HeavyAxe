@@ -3,23 +3,29 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class knight : MonoBehaviour
+public class Knight : MonoBehaviour
 {
-    public event Action<float> onSwingAxe;
+    public event Action<float> OnSwingAxe;
 
-    public float moveSpeed = 2.5f;
-    public axe axeScript;
+    [SerializeField] private float moveSpeed = 3f;
+    public Axe axeScript;
 
     private Rigidbody2D rb;
     private Vector2 movement;
     private InputAction moveAction;
     private InputAction attackAction;
     private InputAction dashAction;
+    public Animator _animator;
 
     private float isDashing;
     private float mousePlayerAngle;
     private bool canMouseClick = true;
     private float axeWeight = 1f;
+
+    // Health variables
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth;
+    public HealthBar healthBar;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,6 +35,9 @@ public class knight : MonoBehaviour
         attackAction = InputSystem.actions.FindAction("Attack");
         rb = GetComponent<Rigidbody2D>();
         axeScript.OnAxeRotationStop += AxeRotationStop;
+
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -43,6 +52,7 @@ public class knight : MonoBehaviour
         movement = moveAction.ReadValue<Vector2>();
         isDashing = dashAction.ReadValue<float>();
         rb.linearVelocity = axeWeight * moveSpeed * movement.normalized;
+        _animator.SetBool("isWalking", rb.linearVelocity.magnitude > 0f);
         if (isDashing == 1)
         {
             rb.linearVelocity = 5f * moveSpeed * movement.normalized;
@@ -61,7 +71,7 @@ public class knight : MonoBehaviour
         if (attackAction.WasPressedThisFrame() && canMouseClick && axeScript.playerCanAttack)
         {
             canMouseClick = false;
-            onSwingAxe?.Invoke(mousePlayerAngle);
+            OnSwingAxe?.Invoke(mousePlayerAngle);
         }
     }
 

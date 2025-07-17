@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: ab328c764bd8b97428f70cc9a2b3bf8d
+guid: 720f9c35509fd5b4b81a5d8cfaaaeb3d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4495478712733764576
-    second: knight_0
+      213: 8614081710646861754
+    second: bombKnight_0
+  - first:
+      213: 6437215506229876986
+    second: bombKnight_1
+  - first:
+      213: 551159571388516443
+    second: bombKnight_2
+  - first:
+      213: -7252526008682117688
+    second: bombKnight_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -73,7 +82,7 @@ TextureImporter:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
-    resizeAlgorithm: 0
+    resizeAlgorithm: 1
     textureFormat: 4
     textureCompression: 0
     compressionQuality: 50
@@ -113,13 +122,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: knight_0
+      name: bombKnight_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 0
-        width: 10
-        height: 16
+        x: 8
+        y: 3
+        width: 16
+        height: 25
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +137,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0eb83d73216236e30800000000000000
-      internalID: 4495478712733764576
+      spriteID: abf9b4d2dad5b8770800000000000000
+      internalID: 8614081710646861754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bombKnight_1
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 3
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af8d777a565955950800000000000000
+      internalID: 6437215506229876986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bombKnight_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 3
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b584b23c5bc16a700800000000000000
+      internalID: 551159571388516443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bombKnight_3
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 3
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c58838450ad95b90800000000000000
+      internalID: -7252526008682117688
       vertices: []
       indices: 
       edges: []
@@ -148,7 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      knight_0: 4495478712733764576
+      bombKnight_0: 8614081710646861754
+      bombKnight_1: 6437215506229876986
+      bombKnight_2: 551159571388516443
+      bombKnight_3: -7252526008682117688
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -2,7 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class axe : MonoBehaviour
+public class Axe : MonoBehaviour
 {
     public event Action<bool> OnAxeRotationStop;
 
@@ -10,16 +10,16 @@ public class axe : MonoBehaviour
 
     public GameObject player;
     private Transform playerTransform;
-    private knight playerScript;
+    private Knight playerScript;
 
     [SerializeField] private Animator _animator;
 
-    private float axeWeight = 0.7f;
-    private float maxDistance = 2f;
-    private float minDistance = 1f;
-    private float axePullSpeed = 4f;
-    private float rotatingDuration = 0.7f;
-    public bool playerCanAttack;
+    [SerializeField] private float axeWeight = 0.5f;
+    [SerializeField] private float maxDistance = 4.5f;
+    [SerializeField] private float minDistance = 2.5f;
+    [SerializeField] private float axePullSpeed = 5f;
+    [SerializeField] private float rotatingDuration = 0.8f;
+    [SerializeField] public bool playerCanAttack;
 
     // Full time variables
     private Vector2 axeToPlayerDirection;
@@ -39,11 +39,11 @@ public class axe : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerTransform = player.GetComponent<Transform>();
-        playerScript = player.GetComponent<knight>();
+        playerScript = player.GetComponent<Knight>();
 
         // Initialize angle between player and axe at start
         playerToAxeAngle = Mathf.Atan2((transform.position - playerTransform.position).y, (transform.position - playerTransform.position).x) * Mathf.Rad2Deg;
-        playerScript.onSwingAxe += AxeAttack;
+        playerScript.OnSwingAxe += AxeAttack;
     }
 
     // Update is called once per frame
