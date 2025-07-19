@@ -75,9 +75,9 @@ public class Knight : MonoBehaviour
         }
     }
 
-    private void AxeRotationStop(bool onRotationStop)
+    private void AxeRotationStop()
     {
-        canMouseClick = onRotationStop;
+        canMouseClick = true;
     }
 
     public void ApplyAxeWeight(float axeWeight)

@@ -24,7 +24,7 @@ public class AxeShadow : MonoBehaviour
         _animator.SetTrigger("rotationTrigger");
     }
 
-    void EndSwing(bool endSwing)
+    void EndSwing()
     {
         _animator.SetTrigger("rotationTrigger");
     }

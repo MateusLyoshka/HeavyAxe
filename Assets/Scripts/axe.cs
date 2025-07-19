@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Axe : MonoBehaviour
 {
-    public event Action<bool> OnAxeRotationStop;
+    public event Action OnAxeRotationStop;
 
     private Rigidbody2D rb;
 
+    public Transform leftDebrisPoint;
+    public Transform rightDebrisPoint;
+    public DesbrisDispenser debris;
     public GameObject player;
     private Transform playerTransform;
     private Knight playerScript;
@@ -84,8 +87,15 @@ public class Axe : MonoBehaviour
             rotatingTimeElapsed = 0f;
             playerToAxeAngle = attackAngle;
             rotationDirection *= -1;
-            OnAxeRotationStop?.Invoke(true);
+            OnAxeRotationStop?.Invoke();
             isRotating = false;
+            Vector2 debriDirection = leftDebrisPoint.position - rightDebrisPoint.position;
+            if (rotationDirection == 1)
+            {
+                debris.DispenserDebris(leftDebrisPoint, debriDirection);
+            }
+            else debris.DispenserDebris(rightDebrisPoint, -debriDirection);
+
         }
     }
 
