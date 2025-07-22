@@ -217,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &265060111
 Animator:
   serializedVersion: 7
@@ -249,11 +249,11 @@ Transform:
   m_GameObject: {fileID: 265060110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.054, y: -0.05, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.9141084, y: -1.1338974, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 687900179}
+  m_Father: {fileID: 975009945}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &265060113
 SpriteRenderer:
@@ -322,10 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0aa894e0cb08f47bf5c0589c3ece03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axeShadowSprite: {fileID: 265060113}
   playerScript: {fileID: 975009943}
   axeScript: {fileID: 687900180}
   axeTransform: {fileID: 687900179}
   _animator: {fileID: 265060111}
+  axeOffSet: {x: 0, y: -0.15, z: 0}
 --- !u!1 &307987995
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &307987996
 Animator:
   serializedVersion: 7
@@ -918,6 +920,9 @@ MonoBehaviour:
   singleDebri: {fileID: 1350935577534584008, guid: 24e529fc58503ae4485e9be69e7df223, type: 3}
   debriVerticalVelocity: {x: 3.36, y: 4.0579596}
   debriGroundVelocity: {x: 4.2354083, y: 5.15}
+  debriSizeRange: {x: 4.57, y: 9.507143}
+  debrisAmount: {x: 8, y: 9}
+  debrisDispenseDegrees: 45
 --- !u!1 &975009941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,10 +1053,11 @@ Transform:
   m_GameObject: {fileID: 975009941}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.47348, y: -0.4575421, z: 0}
+  m_LocalPosition: {x: 0.06, y: -1.43, z: 0}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 265060112}
   - {fileID: 687900179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1481,9 +1487,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3590541415984098357, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 265060112}
     - targetCorrespondingSourceObject: {fileID: 3590541415984098357, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
       insertIndex: -1
       addedObject: {fileID: 979772412}

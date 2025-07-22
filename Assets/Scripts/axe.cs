@@ -22,7 +22,7 @@ public class Axe : MonoBehaviour
     [SerializeField] private float minDistance = 2f;
     [SerializeField] private float axePullSpeed = 5f;
     [SerializeField] private float rotatingDuration = 0.8f;
-    [SerializeField] public bool playerCanAttack;
+    public bool playerCanAttack;
 
     // Full time variables
     private Vector2 axeToPlayerDirection;
@@ -37,6 +37,13 @@ public class Axe : MonoBehaviour
     private short rotationDirection = 1;
     private Vector2 lastPlayerToAxeDirection;
 
+    // Speed and Damage
+    private float speedAtMaxRotation;
+    private float speedAtMidRotation;
+    private bool midRotationStored;
+    private Vector2 lastAxePosition;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,6 +54,8 @@ public class Axe : MonoBehaviour
         // Initialize angle between player and axe at start
         playerToAxeAngle = Mathf.Atan2((transform.position - playerTransform.position).y, (transform.position - playerTransform.position).x) * Mathf.Rad2Deg;
         playerScript.OnSwingAxe += AxeAttack;
+
+        lastAxePosition = transform.position;
     }
 
     // Update is called once per frame
@@ -59,16 +68,37 @@ public class Axe : MonoBehaviour
         {
             AxeRotationCalculator();
         }
-        else if (!isRotating)
+        else
         {
             AxeIsNotRotating();
         }
 
     }
 
+    private void FixedUpdate()
+    {
+        if (isRotating)
+        {
+            float distanceToCurrentPos = Vector2.Distance(lastAxePosition, transform.position);
+            float currentSpeed = distanceToCurrentPos / Time.fixedDeltaTime;
+            if (rotatingTimeElapsed / rotatingDuration >= 0.7 && !midRotationStored)
+            {
+                speedAtMidRotation = currentSpeed;
+                midRotationStored = true;
+            }
+            if (currentSpeed > speedAtMaxRotation)
+            {
+                speedAtMaxRotation = currentSpeed;
+            }
+            lastAxePosition = transform.position;
+        }
+    }
+
+
     void AxeIsNotRotating()
     {
         // Store the last known player position and direction to the axe before the attack
+        lastAxePosition = transform.position;
         lastPlayerPosition = playerTransform.position;
         lastPlayerToAxeDirection = transform.position - playerTransform.position;
         playerToAxeAngle = Mathf.Atan2(lastPlayerToAxeDirection.y, lastPlayerToAxeDirection.x) * Mathf.Rad2Deg;
@@ -89,14 +119,22 @@ public class Axe : MonoBehaviour
             rotationDirection *= -1;
             OnAxeRotationStop?.Invoke();
             isRotating = false;
-            Vector2 debriDirection = leftDebrisPoint.position - rightDebrisPoint.position;
-            if (rotationDirection == 1)
+            Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
+            if (rotationDirection == 1 && speedAtMaxRotation >= 18f)
             {
                 debris.DispenserDebris(leftDebrisPoint, debriDirection);
             }
-            else debris.DispenserDebris(rightDebrisPoint, -debriDirection);
-
+            else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
+            resetSpeedVar();
         }
+    }
+
+    void resetSpeedVar()
+    {
+        Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
+        speedAtMaxRotation = 0;
+        speedAtMidRotation = 0;
+        midRotationStored = false;
     }
 
     void AxeRotationCalculator()
@@ -105,7 +143,6 @@ public class Axe : MonoBehaviour
         rotatingTimeElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
         float powt2 = Mathf.Pow(0.3f + t, 5f);
-
         // Adjust the rotation angle depending on rotation direction
         if (rotationDirection == 1) playerToAxeAngle -= powt2;
         else playerToAxeAngle += powt2;
