@@ -59,7 +59,6 @@ public class Knight : MonoBehaviour
         }
     }
 
-
     void MouseCapture()
     {
         Vector2 mouseScreen = Mouse.current.position.ReadValue();
@@ -93,6 +92,6 @@ public class Knight : MonoBehaviour
     public void DamageReceive(float damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealth(currentHealth);
+        healthBar.SetHealth(Mathf.Clamp(currentHealth, 0, maxHealth));
     }
 }

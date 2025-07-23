@@ -42,6 +42,9 @@ public class Axe : MonoBehaviour
     private float speedAtMidRotation;
     private bool midRotationStored;
     private Vector2 lastAxePosition;
+    private int acumulatedDamge;
+    private float currentSpeed;
+    private int damagePerSpeedMult = 1;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,7 +83,7 @@ public class Axe : MonoBehaviour
         if (isRotating)
         {
             float distanceToCurrentPos = Vector2.Distance(lastAxePosition, transform.position);
-            float currentSpeed = distanceToCurrentPos / Time.fixedDeltaTime;
+            currentSpeed = distanceToCurrentPos / Time.fixedDeltaTime;
             if (rotatingTimeElapsed / rotatingDuration >= 0.7 && !midRotationStored)
             {
                 speedAtMidRotation = currentSpeed;
@@ -89,6 +92,11 @@ public class Axe : MonoBehaviour
             if (currentSpeed > speedAtMaxRotation)
             {
                 speedAtMaxRotation = currentSpeed;
+                if (currentSpeed >= 2 * damagePerSpeedMult)
+                {
+                    acumulatedDamge += 50;
+                    damagePerSpeedMult += 1;
+                }
             }
             lastAxePosition = transform.position;
         }
@@ -113,7 +121,6 @@ public class Axe : MonoBehaviour
         if (reachedTarget)
         {
             _animator.SetTrigger("rotationTrigger");
-
             rotatingTimeElapsed = 0f;
             playerToAxeAngle = attackAngle;
             rotationDirection *= -1;
@@ -125,16 +132,17 @@ public class Axe : MonoBehaviour
                 debris.DispenserDebris(leftDebrisPoint, debriDirection);
             }
             else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
-            resetSpeedVar();
+            resetSpeedAndDamageVar();
         }
     }
 
-    void resetSpeedVar()
+    void resetSpeedAndDamageVar()
     {
-        Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
+        // Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
         speedAtMaxRotation = 0;
         speedAtMidRotation = 0;
         midRotationStored = false;
+        acumulatedDamge = 0;
     }
 
     void AxeRotationCalculator()
@@ -188,5 +196,10 @@ public class Axe : MonoBehaviour
         {
             playerScript.ApplyAxeWeight(1f);
         }
+    }
+
+    public int ApplyDamage()
+    {
+        return acumulatedDamge;
     }
 }
