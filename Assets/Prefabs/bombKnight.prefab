@@ -134,7 +134,7 @@ MonoBehaviour:
   minSpeed: 0.6
   maxSpeed: 1
   maxExplosionRadius: 3
-  maxHealth: 10000
+  maxHealth: 100
 --- !u!61 &8657044824118163153
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5654720081593566109}
         m_TargetAssemblyTypeName: BombKnight, Assembly-CSharp
-        m_MethodName: ExplosionDeath
+        m_MethodName: DeathByAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

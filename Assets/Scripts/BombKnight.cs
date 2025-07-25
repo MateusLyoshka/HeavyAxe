@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,12 +15,13 @@ public class BombKnight : MonoBehaviour
     public float maxExplosionRadius;
 
     private Vector2 playerDirection;
-    private bool playerCollided;
     private float moveSpeed;
-    private float damageTime = 0f;
+    private float knockbackTime = 0f;
+    private bool onKnockback, isDead, playerCollided;
     public float maxHealth;
     private int receivedDamage;
-    private bool isDead;
+    private float explosionTime;
+    public float knokbackPower = 10f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,14 +38,19 @@ public class BombKnight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
+        if (!isDead && !onKnockback && !playerCollided)
         {
             playerDirection = (player.transform.position - transform.position).normalized;
             rb.linearVelocity = moveSpeed * playerDirection;
         }
-        else
+        else if (playerCollided)
         {
-
+            explosionTime += Time.deltaTime;
+            if (explosionTime >= 2f)
+            {
+                ExplosionDeath();
+                explosionTime = 0;
+            }
         }
     }
 
@@ -56,7 +63,6 @@ public class BombKnight : MonoBehaviour
         if (collision.gameObject.CompareTag("Axe"))
         {
             TakeDamageBehavior();
-            // Debug.Log("a");
         }
     }
 
@@ -64,8 +70,6 @@ public class BombKnight : MonoBehaviour
     {
         isDead = true;
         rb.linearVelocity = Vector2.zero;
-
-        Debug.Log("oi explosion");
 
         float realDistance = Vector2.Distance(player.transform.position, transform.position);
         if (realDistance < maxExplosionRadius)
@@ -75,20 +79,43 @@ public class BombKnight : MonoBehaviour
         }
         debris.DispenserDebris(transform, Random.insideUnitCircle);
         Destroy(gameObject);
-
     }
 
     public void DeathByAttack()
     {
-
+        isDead = true;
+        float randomExplosion = Random.Range(0, 4);
+        if (randomExplosion == 0)
+        {
+            ExplosionDeath();
+        }
+        else
+        {
+            Destroy(gameObject, 0.5f);
+        }
     }
 
     public void TakeDamageBehavior()
     {
         receivedDamage = axe.ApplyDamage();
         enemyBehavior.TakeDamage(receivedDamage);
-        Debug.Log($"dano recebido {receivedDamage}");
+        if (receivedDamage > 0)
+        {
+            StartCoroutine(ApplyKnockback());
+        }
+    }
+
+    private IEnumerator ApplyKnockback()
+    {
+        onKnockback = true;
         Vector2 knockbackDir = (transform.position - player.transform.position).normalized;
-        rb.linearVelocity = knockbackDir * 50f;
+        rb.AddForce(knockbackDir * knokbackPower, ForceMode2D.Impulse);
+        while (knockbackTime <= 0.5f)
+        {
+            knockbackTime += Time.deltaTime;
+            yield return null;
+        }
+        onKnockback = false;
+        knockbackTime = 0;
     }
 }
