@@ -16,16 +16,15 @@ public class AxeShadow : MonoBehaviour
 
     void Start()
     {
-        playerScript.OnSwingAxe += StartSwing;
-        axeScript.OnAxeRotationStop += EndSwing;
+        playerScript.OnAxeRotationStarted += StartSwing;
+        axeScript.OnAxeRotationStoped += EndSwing;
     }
 
     void Update()
     {
-        transform.position = axeTransform.position + axeOffSet;
-        transform.rotation = axeTransform.rotation;
+        transform.SetPositionAndRotation(axeTransform.position + axeOffSet, axeTransform.rotation);
     }
-    void StartSwing(float attackAngle)
+    void StartSwing()
     {
         _animator.SetTrigger("rotationTrigger");
     }

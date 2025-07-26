@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Axe : MonoBehaviour
 {
-    public event Action OnAxeRotationStop;
+    public event Action OnAxeRotationStoped;
 
     private Rigidbody2D rb;
 
@@ -36,6 +36,8 @@ public class Axe : MonoBehaviour
     private bool isRotating = false;
     private short rotationDirection = 1;
     private Vector2 lastPlayerToAxeDirection;
+    private int axeTurns;
+    private int currentTurn;
 
     // Speed and Damage
     private float speedAtMaxRotation;
@@ -56,7 +58,8 @@ public class Axe : MonoBehaviour
 
         // Initialize angle between player and axe at start
         playerToAxeAngle = Mathf.Atan2((transform.position - playerTransform.position).y, (transform.position - playerTransform.position).x) * Mathf.Rad2Deg;
-        playerScript.OnSwingAxe += AxeAttack;
+        playerScript.AxeAttack += AxeAttack;
+        playerScript.AxeFullSpin += FullSpin;
 
         lastAxePosition = transform.position;
     }
@@ -116,33 +119,32 @@ public class Axe : MonoBehaviour
     void AxeRotationStop()
     {
         // Stop the rotation when the angle between current and target angle is small enough
-        float delta = Mathf.DeltaAngle(playerToAxeAngle, attackAngle);
-        bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
-        if (reachedTarget)
+        if (rotatingTimeElapsed >= rotatingDuration / 2)
         {
-            _animator.SetTrigger("rotationTrigger");
-            rotatingTimeElapsed = 0f;
-            playerToAxeAngle = attackAngle;
-            rotationDirection *= -1;
-            OnAxeRotationStop?.Invoke();
-            isRotating = false;
-            Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
-            if (rotationDirection == 1 && speedAtMaxRotation >= 18f)
+            float delta = Mathf.DeltaAngle(playerToAxeAngle, attackAngle);
+            bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
+            if (reachedTarget && currentTurn == axeTurns)
             {
-                debris.DispenserDebris(leftDebrisPoint, debriDirection);
+                currentTurn = 0;
+                _animator.SetTrigger("rotationTrigger");
+                rotatingTimeElapsed = 0f;
+                playerToAxeAngle = attackAngle;
+                rotationDirection *= -1;
+                OnAxeRotationStoped.Invoke();
+                isRotating = false;
+                Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
+                if (rotationDirection == 1 && speedAtMaxRotation >= 18f)
+                {
+                    debris.DispenserDebris(leftDebrisPoint, debriDirection);
+                }
+                else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
+                resetSpeedAndDamageVar();
             }
-            else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
-            resetSpeedAndDamageVar();
+            else if (reachedTarget)
+            {
+                currentTurn++;
+            }
         }
-    }
-
-    void resetSpeedAndDamageVar()
-    {
-        // Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
-        speedAtMaxRotation = 0;
-        speedAtMidRotation = 0;
-        midRotationStored = false;
-        acumulatedDamge = 0;
     }
 
     void AxeRotationCalculator()
@@ -175,7 +177,16 @@ public class Axe : MonoBehaviour
     {
         // Recieve the attack event
         _animator.SetTrigger("rotationTrigger");
-        this.attackAngle = attackAngle * Mathf.Rad2Deg; ;
+        this.attackAngle = attackAngle * Mathf.Rad2Deg;
+        axeTurns = 0;
+        isRotating = true;
+    }
+
+    public void FullSpin(int turns)
+    {
+        _animator.SetTrigger("rotationTrigger");
+        attackAngle = playerToAxeAngle;
+        axeTurns = turns;
         isRotating = true;
     }
 
@@ -201,5 +212,14 @@ public class Axe : MonoBehaviour
     public int ApplyDamage()
     {
         return acumulatedDamge;
+    }
+
+    void resetSpeedAndDamageVar()
+    {
+        // Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
+        speedAtMaxRotation = 0;
+        speedAtMidRotation = 0;
+        midRotationStored = false;
+        acumulatedDamge = 0;
     }
 }

@@ -5,7 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Knight : MonoBehaviour
 {
-    public event Action<float> OnSwingAxe;
+    public event Action<float> AxeAttack;
+    public event Action<int> AxeFullSpin;
+    public event Action OnAxeRotationStarted;
+    public event Action FullSpinResetStamin;
 
     [SerializeField] private float moveSpeed = 3f;
     public Axe axeScript;
@@ -15,6 +18,7 @@ public class Knight : MonoBehaviour
     private InputAction moveAction;
     private InputAction attackAction;
     private InputAction dashAction;
+    private InputAction axeFullSpinAction;
     public Animator _animator;
 
     private float isDashing;
@@ -22,10 +26,17 @@ public class Knight : MonoBehaviour
     private bool canMouseClick = true;
     private float axeWeight = 1f;
 
-    // Health variables
+    // Health var
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
     public HealthBar healthBar;
+
+    // Stamin var
+    public float staminRegenTime = 4f;
+    public float energyMaxValue = 1f;
+    private bool isStaminFull;
+    public StaminBar staminBar;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,11 +44,16 @@ public class Knight : MonoBehaviour
         dashAction = InputSystem.actions.FindAction("Sprint");
         moveAction = InputSystem.actions.FindAction("Move");
         attackAction = InputSystem.actions.FindAction("Attack");
+        axeFullSpinAction = InputSystem.actions.FindAction("Jump");
+
         rb = GetComponent<Rigidbody2D>();
-        axeScript.OnAxeRotationStop += AxeRotationStop;
+        axeScript.OnAxeRotationStoped += AxeRotationStop;
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+
+        staminBar.StaminBarInit(energyMaxValue, staminRegenTime);
+        staminBar.IsStaminFull += IsStaminFull;
     }
 
     // Update is called once per frame
@@ -67,10 +83,23 @@ public class Knight : MonoBehaviour
 
         Vector2 direction = mouseWorld - transform.position;
         mousePlayerAngle = Mathf.Atan2(direction.y, direction.x);
-        if (attackAction.WasPressedThisFrame() && canMouseClick && axeScript.playerCanAttack)
+        if (canMouseClick && axeScript.playerCanAttack)
         {
-            canMouseClick = false;
-            OnSwingAxe?.Invoke(mousePlayerAngle);
+            if (attackAction.WasPressedThisFrame())
+            {
+                canMouseClick = false;
+                AxeAttack?.Invoke(mousePlayerAngle);
+                OnAxeRotationStarted.Invoke();
+            }
+            else if (axeFullSpinAction.WasPressedThisFrame() && isStaminFull)
+            {
+                canMouseClick = false;
+                AxeFullSpin?.Invoke(2);
+                OnAxeRotationStarted.Invoke();
+                FullSpinResetStamin.Invoke();
+                isStaminFull = false;
+            }
+
         }
     }
 
@@ -93,5 +122,10 @@ public class Knight : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.SetHealth(Mathf.Clamp(currentHealth, 0, maxHealth));
+    }
+
+    private void IsStaminFull()
+    {
+        isStaminFull = true;
     }
 }
