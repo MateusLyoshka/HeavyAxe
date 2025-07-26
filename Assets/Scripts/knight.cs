@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,14 @@ public class Knight : MonoBehaviour
     public Animator _animator;
 
     private float isDashing;
+    public float dashTimeDelayPassed;
+    public float dashTimeDelay = 1f;
+    public float dashDuration = 0.8f;
+    private float dashDurationPassed;
+    public float dashForce;
+    private bool canDash;
+    private bool isDashingActive = false;
+
     private float mousePlayerAngle;
     private bool canMouseClick = true;
     private float axeWeight = 1f;
@@ -65,13 +74,38 @@ public class Knight : MonoBehaviour
 
     void Move()
     {
-        movement = moveAction.ReadValue<Vector2>();
         isDashing = dashAction.ReadValue<float>();
-        rb.linearVelocity = axeWeight * moveSpeed * movement.normalized;
-        _animator.SetBool("isWalking", rb.linearVelocity.magnitude > 0f);
-        if (isDashing == 1)
+
+        if (isDashing == 1 && !isDashingActive && canDash)
         {
-            rb.linearVelocity = 5f * moveSpeed * movement.normalized;
+            isDashingActive = true;
+            canDash = false;
+            dashDurationPassed = 0f;
+            dashTimeDelayPassed = 0f;
+        }
+        if (isDashingActive)
+        {
+            rb.linearVelocity = movement.normalized * dashForce;
+            dashDurationPassed += Time.deltaTime;
+
+            if (dashDurationPassed >= dashDuration)
+            {
+                isDashingActive = false;
+            }
+        }
+        else
+        {
+            movement = moveAction.ReadValue<Vector2>();
+            rb.linearVelocity = axeWeight * moveSpeed * movement.normalized;
+            _animator.SetBool("isWalking", rb.linearVelocity.magnitude > 0f);
+        }
+        if (!canDash)
+        {
+            dashTimeDelayPassed += Time.deltaTime;
+            if (dashTimeDelayPassed >= dashTimeDelay)
+            {
+                canDash = true;
+            }
         }
     }
 

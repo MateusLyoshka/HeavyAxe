@@ -195,6 +195,8 @@ MonoBehaviour:
   moveSpeed: 3
   axeScript: {fileID: 1147561159042434873}
   _animator: {fileID: 7238204408537974888}
+  dashTimeDaley: 0.2
+  dashForce: 15
   maxHealth: 100
   currentHealth: 100
   healthBar: {fileID: 0}
