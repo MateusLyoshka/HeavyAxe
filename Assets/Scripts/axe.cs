@@ -8,12 +8,12 @@ public class Axe : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    public Transform leftDebrisPoint;
-    public Transform rightDebrisPoint;
     public DesbrisDispenser debris;
     public GameObject player;
-    private Transform playerTransform;
     private Knight playerScript;
+    public Transform leftDebrisPoint;
+    public Transform rightDebrisPoint;
+    private Transform playerTransform;
 
     [SerializeField] private Animator _animator;
 
@@ -37,17 +37,18 @@ public class Axe : MonoBehaviour
     private short rotationDirection = 1;
     private Vector2 lastPlayerToAxeDirection;
     private int axeTurns;
-    private int currentTurn;
+    private float previousAngle, accumulatedAngle;
+
+    private bool normalAttack;
 
     // Speed and Damage
     private float speedAtMaxRotation;
     private float speedAtMidRotation;
     private bool midRotationStored;
     private Vector2 lastAxePosition;
-    private int acumulatedDamge;
+    private int acumulatedDamage;
     private float currentSpeed;
     private int damagePerSpeedMult = 1;
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,16 +73,23 @@ public class Axe : MonoBehaviour
         playerCanAttack = currentDistance > minDistance;
         if (isRotating)
         {
+            UpdateSpeedCalculation();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isRotating)
+        {
             AxeRotationCalculator();
         }
         else
         {
             AxeIsNotRotating();
         }
-
     }
 
-    private void FixedUpdate()
+    void UpdateSpeedCalculation()
     {
         if (isRotating)
         {
@@ -97,14 +105,13 @@ public class Axe : MonoBehaviour
                 speedAtMaxRotation = currentSpeed;
                 if (currentSpeed >= 2 * damagePerSpeedMult)
                 {
-                    acumulatedDamge += 50;
+                    acumulatedDamage += 50;
                     damagePerSpeedMult += 1;
                 }
             }
             lastAxePosition = transform.position;
         }
     }
-
 
     void AxeIsNotRotating()
     {
@@ -116,46 +123,14 @@ public class Axe : MonoBehaviour
         PlayerAxePull();
     }
 
-    void AxeRotationStop()
-    {
-        // Stop the rotation when the angle between current and target angle is small enough
-        if (rotatingTimeElapsed >= rotatingDuration / 2)
-        {
-            float delta = Mathf.DeltaAngle(playerToAxeAngle, attackAngle);
-            bool reachedTarget = Mathf.Abs(delta) <= 3.5f;
-            if (reachedTarget && currentTurn == axeTurns)
-            {
-                currentTurn = 0;
-                _animator.SetTrigger("rotationTrigger");
-                rotatingTimeElapsed = 0f;
-                playerToAxeAngle = attackAngle;
-                rotationDirection *= -1;
-                OnAxeRotationStoped.Invoke();
-                isRotating = false;
-                Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
-                if (rotationDirection == 1 && speedAtMaxRotation >= 18f)
-                {
-                    debris.DispenserDebris(leftDebrisPoint, debriDirection);
-                }
-                else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
-                resetSpeedAndDamageVar();
-            }
-            else if (reachedTarget)
-            {
-                currentTurn++;
-            }
-        }
-    }
-
     void AxeRotationCalculator()
     {
-        // Calculate rotation progression using time and a power curve for acceleration
-        rotatingTimeElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
-        float powt2 = Mathf.Pow(0.3f + t, 5f);
+        float deltaAngle = Mathf.DeltaAngle(previousAngle, playerToAxeAngle);
+        accumulatedAngle += Mathf.Abs(deltaAngle);
+        previousAngle = playerToAxeAngle;
         // Adjust the rotation angle depending on rotation direction
-        if (rotationDirection == 1) playerToAxeAngle -= powt2;
-        else playerToAxeAngle += powt2;
+        if (rotationDirection == 1) playerToAxeAngle -= ReturnRotationSpeed();
+        else playerToAxeAngle += ReturnRotationSpeed();
         // Prevent overflow by flipping angle if it exceeds bounds
         if ((playerToAxeAngle <= -180f && rotationDirection == 1) || (playerToAxeAngle >= 180f && rotationDirection == -1)) playerToAxeAngle *= -1;
 
@@ -170,7 +145,28 @@ public class Axe : MonoBehaviour
         rb.SetRotation(lastAxeToPlayerAngle - 42f);
 
         // Check if the rotation should stop
-        AxeRotationStop();
+        AxeRotationStopVerify();
+    }
+
+    private float ReturnRotationSpeed()
+    {
+        // Calculate rotation progression using time and a power curve for acceleration
+        rotatingTimeElapsed += Time.fixedDeltaTime;
+        float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
+        float powt2 = Mathf.Pow(0.3f + t, 5f) * 2f;
+
+        return powt2;
+    }
+
+    void AxeRotationStopVerify()
+    {
+        // Stop the rotation when the angle between current and target angle is small enough
+        float delta = Mathf.DeltaAngle(playerToAxeAngle, attackAngle);
+        bool reachedTarget = Mathf.Abs(delta) <= 5.5f;
+        if ((reachedTarget && normalAttack) || (accumulatedAngle >= axeTurns * 360f && !normalAttack))
+        {
+            AxeStop();
+        }
     }
 
     void AxeAttack(float attackAngle)
@@ -179,6 +175,7 @@ public class Axe : MonoBehaviour
         _animator.SetTrigger("rotationTrigger");
         this.attackAngle = attackAngle * Mathf.Rad2Deg;
         axeTurns = 0;
+        normalAttack = true;
         isRotating = true;
     }
 
@@ -188,6 +185,7 @@ public class Axe : MonoBehaviour
         attackAngle = playerToAxeAngle;
         axeTurns = turns;
         isRotating = true;
+        previousAngle = playerToAxeAngle;
     }
 
     void PlayerAxePull()
@@ -200,7 +198,7 @@ public class Axe : MonoBehaviour
         currentDistance = axeToPlayerDirection.magnitude;
         if (currentDistance >= maxDistance)
         {
-            rb.MovePosition(rb.position + axePullSpeed * Time.deltaTime * axeToPlayerDirection);
+            rb.MovePosition(rb.position + axePullSpeed * Time.fixedDeltaTime * axeToPlayerDirection);
             playerScript.ApplyAxeWeight(axeWeight);
         }
         else
@@ -211,15 +209,31 @@ public class Axe : MonoBehaviour
 
     public int ApplyDamage()
     {
-        return acumulatedDamge;
+        return acumulatedDamage;
     }
 
-    void resetSpeedAndDamageVar()
+    void AxeStop()
+    {
+        _animator.SetTrigger("rotationTrigger");
+
+        rotationDirection *= -1;
+        OnAxeRotationStoped.Invoke();
+        Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
+        if (rotationDirection == 1 && speedAtMaxRotation >= 18f) { debris.DispenserDebris(leftDebrisPoint, debriDirection); }
+        else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
+        AxeStopResetVar();
+    }
+
+    void AxeStopResetVar()
     {
         // Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
+        normalAttack = false;
+        isRotating = false;
+        rotatingTimeElapsed = 0f;
         speedAtMaxRotation = 0;
         speedAtMidRotation = 0;
         midRotationStored = false;
-        acumulatedDamge = 0;
+        acumulatedDamage = 0;
+        accumulatedAngle = 0;
     }
 }

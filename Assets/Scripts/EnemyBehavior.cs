@@ -13,8 +13,6 @@ public class EnemyBehavior : MonoBehaviour
     {
         maxHealth = health;
         currentHealth = health;
-        Debug.Log($"vida atual: {currentHealth}");
-
     }
 
     public void SetHealth(float health)
@@ -25,7 +23,7 @@ public class EnemyBehavior : MonoBehaviour
     public void TakeDamage(float damage)
     {
         SetHealth(Mathf.Clamp(currentHealth - damage, 0, maxHealth));
-        Debug.Log($"vida atual: {currentHealth}");
+        // Debug.Log($"vida atual: {currentHealth}");
         if (currentHealth <= 0)
         {
             DeathBehavior();
