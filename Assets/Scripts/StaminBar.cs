@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class StaminBar : MonoBehaviour
 {
     public Slider slider;
-    public Knight playerScript;
+    public GameObject player;
+    private Knight playerScript;
 
     public event Action IsStaminFull;
 
@@ -20,7 +21,7 @@ public class StaminBar : MonoBehaviour
     void Start()
     {
         slider = GetComponent<Slider>();
-        playerScript = playerScript.GetComponent<Knight>();
+        playerScript = player.GetComponent<Knight>();
         playerScript.FullSpinResetStamin += ResetStamin;
     }
 
@@ -30,6 +31,12 @@ public class StaminBar : MonoBehaviour
         this.staminRegenTime = staminRegenTime;
         slider.value = 0;
         isStaminInitialized = true;
+        isStaminFull = false;
+    }
+
+    public void SetStamin(float energyValue)
+    {
+        slider.value = energyValue;
     }
 
     void StaminBarUpdate(float energyAmount)
@@ -45,6 +52,7 @@ public class StaminBar : MonoBehaviour
     void Update()
     {
         if (isStaminFull || !isStaminInitialized) return;
+
         regenTimePassed += Time.deltaTime;
         float energyAmount = Mathf.Clamp01(regenTimePassed / staminRegenTime);
         StaminBarUpdate(energyAmount);

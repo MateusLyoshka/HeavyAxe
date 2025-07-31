@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,7 +13,6 @@ public class Knight : MonoBehaviour
     public event Action FullSpinResetStamin;
 
     [SerializeField] private float moveSpeed = 3f;
-    public Axe axeScript;
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -22,8 +22,9 @@ public class Knight : MonoBehaviour
     private InputAction axeFullSpinAction;
     public Animator _animator;
 
+    // Dash 
     private float isDashing;
-    public float dashTimeDelayPassed;
+    private float dashTimeDelayPassed;
     public float dashTimeDelay = 1f;
     public float dashDuration = 0.8f;
     private float dashDurationPassed;
@@ -31,21 +32,34 @@ public class Knight : MonoBehaviour
     private bool canDash;
     private bool isDashingActive = false;
 
+    // Mouse
     private float mousePlayerAngle;
     private bool canMouseClick = true;
-    private float axeWeight = 1f;
 
     // Health var
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
-    public HealthBar healthBar;
+    private HealthBar healthBar;
 
     // Stamin var
     public float staminRegenTime = 4f;
     public float energyMaxValue = 1f;
     private bool isStaminFull;
-    public StaminBar staminBar;
+    private StaminBar staminBar;
 
+    // Axe
+    private Axe axeScript;
+    private float axeWeight = 1f;
+    public float attackDelay;
+    private float attackDelayPassed;
+    private AxeShadow axeShadow;
+
+    // Full axe
+    public FullAxe fullAxe;
+    private FullAxe instFullAxe;
+
+    // Hud
+    public Canvas hud;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,15 +68,22 @@ public class Knight : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         attackAction = InputSystem.actions.FindAction("Attack");
         axeFullSpinAction = InputSystem.actions.FindAction("Jump");
-
         rb = GetComponent<Rigidbody2D>();
+
+        instFullAxe = Instantiate(fullAxe, transform.position, quaternion.identity, transform);
+        axeScript = instFullAxe.GetComponentInChildren<Axe>();
+        axeShadow = instFullAxe.GetComponentInChildren<AxeShadow>();
+        staminBar = hud.GetComponentInChildren<StaminBar>();
+        healthBar = hud.GetComponentInChildren<HealthBar>();
+
+        staminBar.player = gameObject;
+
+        staminBar.StaminBarInit(energyMaxValue, staminRegenTime);
+        staminBar.IsStaminFull += IsStaminFull;
         axeScript.OnAxeRotationStoped += AxeRotationStop;
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-
-        staminBar.StaminBarInit(energyMaxValue, staminRegenTime);
-        staminBar.IsStaminFull += IsStaminFull;
     }
 
     // Update is called once per frame
@@ -117,29 +138,35 @@ public class Knight : MonoBehaviour
 
         Vector2 direction = mouseWorld - transform.position;
         mousePlayerAngle = Mathf.Atan2(direction.y, direction.x);
-        if (canMouseClick && axeScript.playerCanAttack)
+        // Change when attack stamin added (a circle on the mouse right, like zelda)
+        attackDelayPassed += Time.deltaTime;
+        if (canMouseClick && axeScript.playerCanAttack && !axeScript.axeWillDesapear)
         {
-            if (attackAction.WasPressedThisFrame())
+            if (attackAction.WasPressedThisFrame() && attackDelayPassed >= attackDelay)
             {
+                attackDelayPassed = 0;
                 canMouseClick = false;
                 AxeAttack?.Invoke(mousePlayerAngle);
-                OnAxeRotationStarted.Invoke();
+                OnAxeRotationStarted?.Invoke();
             }
             else if (axeFullSpinAction.WasPressedThisFrame() && isStaminFull)
             {
                 canMouseClick = false;
                 AxeFullSpin?.Invoke(2);
-                OnAxeRotationStarted.Invoke();
-                FullSpinResetStamin.Invoke();
+                OnAxeRotationStarted?.Invoke();
+                staminBar.SetStamin(0);
                 isStaminFull = false;
             }
-
         }
     }
 
     private void AxeRotationStop()
     {
         canMouseClick = true;
+        if (!isStaminFull)
+        {
+            FullSpinResetStamin.Invoke();
+        }
     }
 
     public void ApplyAxeWeight(float axeWeight)

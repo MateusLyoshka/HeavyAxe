@@ -4,20 +4,24 @@ public class AxeShadow : MonoBehaviour
 {
     public SpriteRenderer axeShadowSprite;
 
-    public Knight playerScript;
-    public Axe axeScript;
-    public Transform axeTransform;
-
+    private Knight player;
+    private Axe axe;
+    private Transform axeTransform;
 
     [SerializeField] private Animator _animator;
-
     [SerializeField] private Vector3 axeOffSet = new(0, -0.2f, 0);
 
+    public void AxeShadowInit(Axe axeRef, Knight playerRef)
+    {
+        axe = axeRef;
+        axeTransform = axe.transform;
+        player = playerRef;
+    }
 
     void Start()
     {
-        playerScript.OnAxeRotationStarted += StartSwing;
-        axeScript.OnAxeRotationStoped += EndSwing;
+        player.OnAxeRotationStarted += StartSwing;
+        axe.OnAxeRotationStoped += EndSwing;
     }
 
     void Update()
@@ -32,6 +36,11 @@ public class AxeShadow : MonoBehaviour
     void EndSwing()
     {
         _animator.SetTrigger("rotationTrigger");
+
+        if (axe.axeWillDesapear)
+        {
+            transform.SetParent(null, true);
+        }
     }
 
 }

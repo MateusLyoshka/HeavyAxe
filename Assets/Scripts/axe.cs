@@ -9,46 +9,53 @@ public class Axe : MonoBehaviour
     private Rigidbody2D rb;
 
     public DesbrisDispenser debris;
-    public GameObject player;
+    public Transform leftDebrisPoint, rightDebrisPoint;
+    private GameObject player;
     private Knight playerScript;
-    public Transform leftDebrisPoint;
-    public Transform rightDebrisPoint;
     private Transform playerTransform;
 
     [SerializeField] private Animator _animator;
 
     [SerializeField] private float axeWeight = 0.5f;
     [SerializeField] private float maxDistance = 4.5f;
+    [SerializeField] private float unspawnDistance = 6.0f;
     [SerializeField] private float minDistance = 2f;
     [SerializeField] private float axePullSpeed = 5f;
     [SerializeField] private float rotatingDuration = 0.8f;
-    public bool playerCanAttack;
 
-    // Full time variables
+    // Full time 
     private Vector2 axeToPlayerDirection;
     private float currentDistance;
 
-    // OnRotating || full time variables
+    // OnRotating || full time 
     private Vector3 lastPlayerPosition;
-    private float playerToAxeAngle, attackAngle;
-    private float lastAxeToPlayerAngle;
-    private float rotatingTimeElapsed;
-    private bool isRotating = false;
-    private short rotationDirection = 1;
     private Vector2 lastPlayerToAxeDirection;
-    private int axeTurns;
-    private float previousAngle, accumulatedAngle;
+    private float playerToAxeAngle, lastAxeToPlayerAngle;
+    private float rotatingTimeElapsed, rotationDirection = 1;
+    private bool isRotating = false;
 
+
+    // Attacks 
+    private int axeTurns;
+    private float previousAngle, accumulatedAngle, attackAngle;
+    public bool playerCanAttack;
     private bool normalAttack;
 
     // Speed and Damage
-    private float speedAtMaxRotation;
-    private float speedAtMidRotation;
-    private bool midRotationStored;
     private Vector2 lastAxePosition;
+    private float speedAtMaxRotation, speedAtMidRotation, currentSpeed;
     private int acumulatedDamage;
-    private float currentSpeed;
+    private bool midRotationStored;
     private int damagePerSpeedMult = 1;
+
+    // Unspawn control
+    public bool axeWillDesapear;
+
+    public void axeInit(Knight playerRef)
+    {
+        playerScript = playerRef;
+        player = playerRef.gameObject;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,29 +70,31 @@ public class Axe : MonoBehaviour
         playerScript.AxeFullSpin += FullSpin;
 
         lastAxePosition = transform.position;
+
+        playerCanAttack = true;
+        axeWillDesapear = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Continuously calculate direction from axe to player
-        axeToPlayerDirection = playerTransform.position - transform.position;
-        playerCanAttack = currentDistance > minDistance;
-        if (isRotating)
+        if (!axeWillDesapear)
         {
-            UpdateSpeedCalculation();
-        }
-    }
+            // Continuously calculate direction from axe to player
+            axeToPlayerDirection = playerTransform.position - transform.position;
+            playerCanAttack = currentDistance > minDistance;
 
-    private void FixedUpdate()
-    {
-        if (isRotating)
-        {
-            AxeRotationCalculator();
-        }
-        else
-        {
-            AxeIsNotRotating();
+            currentDistance = axeToPlayerDirection.magnitude;
+
+            if (isRotating)
+            {
+                AxeRotationCalculator();
+            }
+            else
+            {
+                AxeIsNotRotating();
+            }
+            UpdateSpeedCalculation();
         }
     }
 
@@ -151,9 +160,9 @@ public class Axe : MonoBehaviour
     private float ReturnRotationSpeed()
     {
         // Calculate rotation progression using time and a power curve for acceleration
-        rotatingTimeElapsed += Time.fixedDeltaTime;
+        rotatingTimeElapsed += Time.deltaTime;
         float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
-        float powt2 = Mathf.Pow(0.3f + t, 5f) * 2f;
+        float powt2 = Mathf.Pow(0.3f + t, 5f);
 
         return powt2;
     }
@@ -195,10 +204,9 @@ public class Axe : MonoBehaviour
         rb.SetRotation(axeToPlayerAngle - 42f);
 
         // If the player is too far, move the axe toward them and apply weight
-        currentDistance = axeToPlayerDirection.magnitude;
         if (currentDistance >= maxDistance)
         {
-            rb.MovePosition(rb.position + axePullSpeed * Time.fixedDeltaTime * axeToPlayerDirection);
+            rb.MovePosition(rb.position + axePullSpeed * Time.deltaTime * axeToPlayerDirection);
             playerScript.ApplyAxeWeight(axeWeight);
         }
         else
@@ -214,13 +222,18 @@ public class Axe : MonoBehaviour
 
     void AxeStop()
     {
-        _animator.SetTrigger("rotationTrigger");
 
+        _animator.SetTrigger("rotationTrigger");
         rotationDirection *= -1;
-        OnAxeRotationStoped.Invoke();
         Vector2 debriDirection = (leftDebrisPoint.position - rightDebrisPoint.position).normalized;
         if (rotationDirection == 1 && speedAtMaxRotation >= 18f) { debris.DispenserDebris(leftDebrisPoint, debriDirection); }
         else if (rotationDirection == -1 && speedAtMaxRotation >= 18) debris.DispenserDebris(rightDebrisPoint, -debriDirection);
+        if (AxeIsFar())
+        {
+            axeWillDesapear = true;
+            transform.SetParent(null, true);
+        }
+        OnAxeRotationStoped.Invoke();
         AxeStopResetVar();
     }
 
@@ -235,5 +248,10 @@ public class Axe : MonoBehaviour
         midRotationStored = false;
         acumulatedDamage = 0;
         accumulatedAngle = 0;
+    }
+
+    public bool AxeIsFar()
+    {
+        return currentDistance >= unspawnDistance;
     }
 }
