@@ -21,12 +21,12 @@ public class StaminBar : MonoBehaviour
     void Start()
     {
         slider = GetComponent<Slider>();
-        playerScript = player.GetComponent<Knight>();
-        playerScript.FullSpinResetStamin += ResetStamin;
     }
 
-    public void StaminBarInit(float energyMaxValue, float staminRegenTime)
+    public void StaminBarInit(float energyMaxValue, float staminRegenTime, Knight playerRef)
     {
+        playerScript = playerRef;
+        playerScript.FullSpinResetStamin += ResetStamin;
         slider.maxValue = energyMaxValue;
         this.staminRegenTime = staminRegenTime;
         slider.value = 0;

@@ -69,21 +69,28 @@ public class Knight : MonoBehaviour
         attackAction = InputSystem.actions.FindAction("Attack");
         axeFullSpinAction = InputSystem.actions.FindAction("Jump");
         rb = GetComponent<Rigidbody2D>();
+        PlayerSpawn();
+    }
 
+    private void PlayerSpawn()
+    {
         instFullAxe = Instantiate(fullAxe, transform.position, quaternion.identity, transform);
-        axeScript = instFullAxe.GetComponentInChildren<Axe>();
-        axeShadow = instFullAxe.GetComponentInChildren<AxeShadow>();
+        PlayerAxeRespawn();
         staminBar = hud.GetComponentInChildren<StaminBar>();
         healthBar = hud.GetComponentInChildren<HealthBar>();
 
-        staminBar.player = gameObject;
-
-        staminBar.StaminBarInit(energyMaxValue, staminRegenTime);
+        staminBar.StaminBarInit(energyMaxValue, staminRegenTime, gameObject.GetComponent<Knight>());
         staminBar.IsStaminFull += IsStaminFull;
-        axeScript.OnAxeRotationStoped += AxeRotationStop;
 
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+    }
+
+    public void PlayerAxeRespawn()
+    {
+        axeScript = instFullAxe.GetComponentInChildren<Axe>();
+        axeShadow = instFullAxe.GetComponentInChildren<AxeShadow>();
+        axeScript.OnAxeRotationStoped += AxeRotationStop;
     }
 
     // Update is called once per frame
@@ -140,20 +147,25 @@ public class Knight : MonoBehaviour
         mousePlayerAngle = Mathf.Atan2(direction.y, direction.x);
         // Change when attack stamin added (a circle on the mouse right, like zelda)
         attackDelayPassed += Time.deltaTime;
+        // Debug.Log($"{canMouseClick}, {axeScript.playerCanAttack},{axeScript.axeWillDesapear}");
         if (canMouseClick && axeScript.playerCanAttack && !axeScript.axeWillDesapear)
         {
             if (attackAction.WasPressedThisFrame() && attackDelayPassed >= attackDelay)
             {
-                attackDelayPassed = 0;
-                canMouseClick = false;
                 AxeAttack?.Invoke(mousePlayerAngle);
-                OnAxeRotationStarted?.Invoke();
+                if (axeScript.AxeCanAttack())
+                {
+                    attackDelayPassed = 0;
+                    canMouseClick = false;
+                    OnAxeRotationStarted?.Invoke();
+                }
             }
             else if (axeFullSpinAction.WasPressedThisFrame() && isStaminFull)
             {
+                OnAxeRotationStarted?.Invoke();
+
                 canMouseClick = false;
                 AxeFullSpin?.Invoke(2);
-                OnAxeRotationStarted?.Invoke();
                 staminBar.SetStamin(0);
                 isStaminFull = false;
             }

@@ -133,7 +133,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5750102678441061755}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -223,8 +223,6 @@ MonoBehaviour:
   debris: {fileID: 7093584673853235240}
   leftDebrisPoint: {fileID: 8522828645923552496}
   rightDebrisPoint: {fileID: 3833542522890796107}
-  player: {fileID: 2975176098933088794, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
-  _animator: {fileID: 2641836189193748285}
   axeWeight: 0.5
   maxDistance: 4.5
   unspawnDistance: 6
@@ -232,8 +230,9 @@ MonoBehaviour:
   axePullSpeed: 3
   rotatingDuration: 0.3
   playerCanAttack: 0
-  normalAttack: 0
+  minAngleAttack: 10
   axeWillDesapear: 0
+  axeInitialized: 0
 --- !u!95 &2641836189193748285
 Animator:
   serializedVersion: 7

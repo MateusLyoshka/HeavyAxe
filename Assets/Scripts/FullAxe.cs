@@ -13,29 +13,37 @@ public class FullAxe : MonoBehaviour
 
     public float destroyTime = 1f;
 
-    private SpriteRenderer axeSprt;
-    private SpriteRenderer axeShadowSprt;
-
     private bool axeUnspawned;
+    private Vector2 axeSpawnPosition;
     public float axeRespawnTime = 1f;
     private float axeRespawnTimePassed;
+    private float axeAngle;
+
+    private void FullAxeInit()
+    {
+        player = GetComponentInParent<Knight>();
+        SpriteRenderer axeSprt = axePrefab.gameObject.GetComponent<SpriteRenderer>();
+        SpriteRenderer axeShadowSprt = axeShadowPrefab.gameObject.GetComponent<SpriteRenderer>();
+        axeSprt.enabled = false;
+        axeShadowSprt.enabled = false;
+        axe = Instantiate(axePrefab, transform.position, Quaternion.identity, transform);
+        axeShadow = Instantiate(axeShadowPrefab, transform.position, Quaternion.identity, transform);
+        AxeNewAngle();
+        axe.AxeInit(player, axeSpawnPosition, axeAngle);
+        axeShadow.AxeShadowInit(axe, player);
+        axe.OnAxeRotationStoped += AxeStop;
+    }
 
     private void Awake()
     {
-        axe = Instantiate(axePrefab, transform.position, Quaternion.identity, transform);
-        axeShadow = Instantiate(axeShadowPrefab, transform.position, Quaternion.identity, transform);
-        player = GetComponentInParent<Knight>();
-        axe.axeInit(player);
-        axeShadow.AxeShadowInit(axe, player);
+        axeSpawnPosition = new Vector2(transform.position.x + 1f, transform.position.y);
+        FullAxeInit();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        axeSprt = axe.GetComponent<SpriteRenderer>();
-        axeShadowSprt = axeShadow.GetComponent<SpriteRenderer>();
 
-        axe.OnAxeRotationStoped += AxeStop;
     }
 
     // Update is called once per frame
@@ -47,10 +55,9 @@ public class FullAxe : MonoBehaviour
 
             if (axeRespawnTimePassed >= axeRespawnTime)
             {
-                axe = Instantiate(axePrefab, transform.position, Quaternion.identity, transform);
-                axeShadow = Instantiate(axeShadowPrefab, transform.position, Quaternion.identity, transform);
-                axeShadow.AxeShadowInit(axe, player);
-                axe.axeInit(player);
+                FullAxeInit();
+                player.PlayerAxeRespawn();
+                axeRespawnTimePassed = 0f;
                 axeUnspawned = false;
             }
         }
@@ -60,9 +67,22 @@ public class FullAxe : MonoBehaviour
     {
         if (axe.AxeIsFar())
         {
+            AxeNewPosition();
             Destroy(axe.gameObject, destroyTime);
             Destroy(axeShadow.gameObject, destroyTime);
             axeUnspawned = true;
         }
+    }
+
+    void AxeNewPosition()
+    {
+        Vector2 axeRespawnPosition = axe.AxeRespawnPosition();
+        Vector2 playerToAxeDirection = (axeRespawnPosition - (Vector2)player.transform.position).normalized;
+        axeSpawnPosition = (Vector2)player.transform.position + playerToAxeDirection * (axe.maxDistance - 1f);
+    }
+
+    void AxeNewAngle()
+    {
+        axeAngle = Mathf.Atan2(((Vector2)player.transform.position - axeSpawnPosition).y, ((Vector2)player.transform.position - axeSpawnPosition).x) * Mathf.Rad2Deg;
     }
 }
