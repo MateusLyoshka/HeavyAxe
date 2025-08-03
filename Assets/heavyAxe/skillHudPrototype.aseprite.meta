@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 47be7c05b58dd9548bc50bcfe4f33ea7
+guid: e404534824e4b1f4598e6d93f82c9fa3
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Frame_0
+  - name: skillHudPrototype
     originalName: 
-    pivot: {x: 0.48387095, y: -0.033333335}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 31
-      height: 30
-    spriteID: b5428e7112e18b94a982f1ad5c52f3a5
+      width: 300
+      height: 300
+    spriteID: 9c5eadc45ca41714889f608966716f75
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1111975197
+      value0: 1374548262
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: axe1
+    name: skillHudPrototype
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: axe1
+    - name: skillHudPrototype
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 1
-        y: 1
-        width: 31
-        height: 30
-      spriteId: b5428e7112e18b94a982f1ad5c52f3a5
+        x: 0
+        y: 0
+        width: 300
+        height: 300
+      spriteId: 9c5eadc45ca41714889f608966716f75
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 300, y: 300}
+  previousTextureSize: {x: 512, y: 512}

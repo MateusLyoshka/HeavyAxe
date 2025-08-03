@@ -21,7 +21,7 @@ public class Axe : MonoBehaviour
     public float maxDistance = 4.5f;
     [SerializeField] private float unspawnDistance = 6.0f;
     [SerializeField] private float minDistance = 2f;
-    [SerializeField] private float axePullSpeed = 5f;
+    [SerializeField] private float axePullSpeed = 10f;
     [SerializeField] private float rotatingDuration = 0.8f;
 
     // Full time 
@@ -203,7 +203,7 @@ public class Axe : MonoBehaviour
     {
         // Recieve the attack event
         this.attackAngle = attackAngle * Mathf.Rad2Deg;
-        if (AxeCanAttack())
+        if (AxeMinAngleAttack())
         {
             _animator.SetTrigger("rotationTrigger");
             axeTurns = 0;
@@ -281,12 +281,12 @@ public class Axe : MonoBehaviour
         return transform.position;
     }
 
-    public int ApplyDamage()
+    public int AxeApplyDamage()
     {
         return acumulatedDamage;
     }
 
-    public bool AxeCanAttack()
+    public bool AxeMinAngleAttack()
     {
         float delta = Mathf.DeltaAngle(attackAngle, playerToAxeAngle);
         return Mathf.Abs(delta) > minAngleAttack;

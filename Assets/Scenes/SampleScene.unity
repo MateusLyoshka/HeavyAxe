@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!223 &231428957 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 7578011426083780722, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
-  m_PrefabInstance: {fileID: 2147474596}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,17 +256,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &532723259 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2739626914314245098, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
-  m_PrefabInstance: {fileID: 1522555515}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c1eaa4922135234a9eebcaa14f68a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +351,15 @@ PrefabInstance:
     - target: {fileID: 2739626914314245098, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
       propertyPath: hud
       value: 
-      objectReference: {fileID: 231428957}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739626914314245098, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
+      propertyPath: dashTimeDelay
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739626914314245098, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
+      propertyPath: staminRegenTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2975176098933088794, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
       propertyPath: m_Name
       value: knight
@@ -417,7 +409,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e9acfbe6f1266545b0ed4a3b2c746c8, type: 3}
---- !u!1001 &2147474596
+--- !u!1001 &1602439143
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -505,10 +497,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 718932921139899876, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
-      propertyPath: m_Value
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1028974460934913640, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -517,21 +505,9 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4939962181112500262, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
-      propertyPath: playerScript
-      value: 
-      objectReference: {fileID: 532723259}
     - target: {fileID: 5307659121164320765, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
       propertyPath: m_Name
       value: Hud
-      objectReference: {fileID: 0}
-    - target: {fileID: 8007537336813081386, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8007537336813081386, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -544,5 +520,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 2147474596}
   - {fileID: 1522555515}
+  - {fileID: 1602439143}

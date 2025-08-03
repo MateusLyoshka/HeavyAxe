@@ -46,8 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   axePrefab: {fileID: 222637292408349856, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
   axeShadowPrefab: {fileID: 826731703628396642, guid: 1d3c29b6486351947bcd943cc3c43731, type: 3}
-  axe: {fileID: 0}
-  axeShadow: {fileID: 0}
   destroyTime: 1
-  axeRespawnTime: 1
-  axeRespawnTimePassed: 0
+  axeRespawnTime: 0.5

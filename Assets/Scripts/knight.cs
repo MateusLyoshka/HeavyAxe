@@ -45,7 +45,6 @@ public class Knight : MonoBehaviour
     public float staminRegenTime = 4f;
     public float energyMaxValue = 1f;
     private bool isStaminFull;
-    private StaminBar staminBar;
 
     // Axe
     private Axe axeScript;
@@ -76,14 +75,9 @@ public class Knight : MonoBehaviour
     {
         instFullAxe = Instantiate(fullAxe, transform.position, quaternion.identity, transform);
         PlayerAxeRespawn();
-        staminBar = hud.GetComponentInChildren<StaminBar>();
-        healthBar = hud.GetComponentInChildren<HealthBar>();
+        // healthBar = hud.GetComponentInChildren<HealthBar>();
 
-        staminBar.StaminBarInit(energyMaxValue, staminRegenTime, gameObject.GetComponent<Knight>());
-        staminBar.IsStaminFull += IsStaminFull;
-
-        currentHealth = maxHealth;
-        healthBar.SetMaxHealth(maxHealth);
+        // currentHealth = maxHealth;
     }
 
     public void PlayerAxeRespawn()
@@ -153,7 +147,7 @@ public class Knight : MonoBehaviour
             if (attackAction.WasPressedThisFrame() && attackDelayPassed >= attackDelay)
             {
                 AxeAttack?.Invoke(mousePlayerAngle);
-                if (axeScript.AxeCanAttack())
+                if (axeScript.AxeMinAngleAttack())
                 {
                     attackDelayPassed = 0;
                     canMouseClick = false;
@@ -166,7 +160,6 @@ public class Knight : MonoBehaviour
 
                 canMouseClick = false;
                 AxeFullSpin?.Invoke(2);
-                staminBar.SetStamin(0);
                 isStaminFull = false;
             }
         }
@@ -175,10 +168,6 @@ public class Knight : MonoBehaviour
     private void AxeRotationStop()
     {
         canMouseClick = true;
-        if (!isStaminFull)
-        {
-            FullSpinResetStamin.Invoke();
-        }
     }
 
     public void ApplyAxeWeight(float axeWeight)
@@ -193,8 +182,8 @@ public class Knight : MonoBehaviour
 
     public void DamageReceive(float damage)
     {
-        currentHealth -= damage;
-        healthBar.SetHealth(Mathf.Clamp(currentHealth, 0, maxHealth));
+        // currentHealth -= damage;
+        // healthBar.SetHealth(Mathf.Clamp(currentHealth, 0, maxHealth));
     }
 
     private void IsStaminFull()

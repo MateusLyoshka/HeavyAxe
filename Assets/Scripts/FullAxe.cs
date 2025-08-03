@@ -78,7 +78,7 @@ public class FullAxe : MonoBehaviour
     {
         Vector2 axeRespawnPosition = axe.AxeRespawnPosition();
         Vector2 playerToAxeDirection = (axeRespawnPosition - (Vector2)player.transform.position).normalized;
-        axeSpawnPosition = (Vector2)player.transform.position + playerToAxeDirection * (axe.maxDistance - 1f);
+        axeSpawnPosition = (Vector2)player.transform.position + playerToAxeDirection * (axe.maxDistance - 2f);
     }
 
     void AxeNewAngle()

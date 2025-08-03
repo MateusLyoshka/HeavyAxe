@@ -97,7 +97,7 @@ public class BombKnight : MonoBehaviour
 
     public void TakeDamageBehavior()
     {
-        receivedDamage = axe.ApplyDamage();
+        receivedDamage = axe.AxeApplyDamage();
         enemyBehavior.TakeDamage(receivedDamage);
         if (receivedDamage > 0)
         {
