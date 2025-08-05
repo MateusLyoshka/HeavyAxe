@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5262333052322347107}
   - component: {fileID: 6287150872211700200}
-  - component: {fileID: 2739626914314245098}
   - component: {fileID: 21154781592156593}
   - component: {fileID: 7238204408537974888}
   - component: {fileID: 1099415915137621211}
+  - component: {fileID: 1153392398856936145}
+  - component: {fileID: 3121208862335215634}
   m_Layer: 0
   m_Name: knight
   m_TagString: Player
@@ -91,30 +92,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2739626914314245098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2975176098933088794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c1eaa4922135234a9eebcaa14f68a10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3
-  _animator: {fileID: 7238204408537974888}
-  dashTimeDelay: 1
-  dashDuration: 0.2
-  dashForce: 16
-  maxHealth: 100
-  currentHealth: 100
-  staminRegenTime: 1
-  energyMaxValue: 1
-  attackDelay: 1
-  fullAxe: {fileID: 5205925484182830209, guid: 5fc711e56f49fa54785915043f131dd1, type: 3}
-  hud: {fileID: 7578011426083780722, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}
 --- !u!50 &21154781592156593
 Rigidbody2D:
   serializedVersion: 5
@@ -210,3 +187,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.44, y: 0.47}
   m_EdgeRadius: 0
+--- !u!114 &1153392398856936145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2975176098933088794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b663183d361f29441af7be4c08834fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
+  dashTimeDelay: 1
+  dashDuration: 0.8
+  dashForce: 10
+  fullAxe: {fileID: 5205925484182830209, guid: 5fc711e56f49fa54785915043f131dd1, type: 3}
+--- !u!114 &3121208862335215634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2975176098933088794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c6b28de41e0f44287a5e96ade218a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLevel: 0

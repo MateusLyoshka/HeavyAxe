@@ -228,7 +228,7 @@ MonoBehaviour:
   unspawnDistance: 6
   minDistance: 2
   axePullSpeed: 3
-  rotatingDuration: 0.3
+  rotatingDuration: 0.7
   playerCanAttack: 0
   minAngleAttack: 10
   axeWillDesapear: 0

@@ -15,6 +15,7 @@ public class SingularSkill : MonoBehaviour
         slider = GetComponent<Slider>();
         timerText = GetComponentInChildren<TimerText>();
         StartTimer(4);
+
     }
 
     public void StartTimer(float time)
