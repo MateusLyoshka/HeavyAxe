@@ -5,16 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerControl : MonoBehaviour
 {
-    public event Action<float> AxeAttack;
-    public event Action<int> AxeFullSpin;
-    public event Action OnAxeRotationStarted;
-
+    public event Action<int> SkillPressed;
 
     private Rigidbody2D rb;
-    private InputAction attackAction;
+    private InputAction QAction;
+    private InputAction WAction;
+    private InputAction EAction;
+    private InputAction RAction;
     private InputAction moveAction;
     private InputAction dashAction;
-    private InputAction axeFullSpinAction;
     private Animator _animator;
 
     // Dash 
@@ -53,27 +52,12 @@ public class PlayerControl : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         dashAction = InputSystem.actions.FindAction("Sprint");
-        attackAction = InputSystem.actions.FindAction("Attack");
-        axeFullSpinAction = InputSystem.actions.FindAction("Jump");
         moveAction = InputSystem.actions.FindAction("MouseWalk");
+        QAction = InputSystem.actions.FindAction("QSkill");
+        WAction = InputSystem.actions.FindAction("WSkill");
+        EAction = InputSystem.actions.FindAction("ESkill");
+        RAction = InputSystem.actions.FindAction("RSkill");
         rb = GetComponent<Rigidbody2D>();
-        PlayerSpawn();
-    }
-
-    private void PlayerSpawn()
-    {
-        instFullAxe = Instantiate(fullAxe, transform.position, quaternion.identity, transform);
-        PlayerAxeRespawn();
-        // healthBar = hud.GetComponentInChildren<HealthBar>();
-
-        // currentHealth = maxHealth;
-    }
-
-    public void PlayerAxeRespawn()
-    {
-        axeScript = instFullAxe.GetComponentInChildren<Axe>();
-        axeShadow = instFullAxe.GetComponentInChildren<AxeShadow>();
-        axeScript.OnAxeRotationStoped += AxeRotationStop;
     }
 
     // Update is called once per frame
@@ -86,10 +70,18 @@ public class PlayerControl : MonoBehaviour
 
     void SkillButtonsCapture()
     {
-        float QButton = attackAction.ReadValue<float>();
-        float WButton = attackAction.ReadValue<float>();
-        float EButton = attackAction.ReadValue<float>();
-        float RButton = attackAction.ReadValue<float>();
+        float QButton = QAction.ReadValue<float>();
+        float WButton = WAction.ReadValue<float>();
+        float EButton = EAction.ReadValue<float>();
+        float RButton = RAction.ReadValue<float>();
+        // Debug.Log(QButton);
+        // Debug.Log(WButton);
+        // Debug.Log(EButton);
+        // Debug.Log(RButton);
+        if (QButton == 1) SkillPressed.Invoke(0);
+        if (WButton == 1) SkillPressed.Invoke(1);
+        if (EButton == 1) SkillPressed.Invoke(2);
+        if (RButton == 1) SkillPressed.Invoke(3);
     }
 
     void Move()
