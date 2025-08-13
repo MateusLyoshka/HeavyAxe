@@ -131,11 +131,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5125489139ddf458523d7768b77e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 2
+  axeShadow: {fileID: 826731703628396642, guid: 1d3c29b6486351947bcd943cc3c43731, type: 3}
   skillManager: {fileID: 6582395465234980935}
   axeWeight: 0.5
   axePullSpeed: 3
   maxDistance: 4.5
+  minDistance: 2
+  axeSpeedAnimationCuve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 43.423763
+      outSlope: 43.423763
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1521529
+      value: 6.6070514
+      inSlope: 0.3055228
+      outSlope: 0.3055228
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.34537864
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.46806794
+      value: 152.16045
+      inSlope: 1188.4375
+      outSlope: 1188.4375
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.18632187
+    - serializedVersion: 3
+      time: 0.6547475
+      value: 444.5106
+      inSlope: 2492.5222
+      outSlope: 2492.5222
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2297252
+    - serializedVersion: 3
+      time: 0.8
+      value: 1000
+      inSlope: 3824.301
+      outSlope: 3824.301
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  axePullSpeedAnimationCuve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.8532393
+      outSlope: 0.8532393
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 6.515625
+      value: 5.559387
+      inSlope: 3.3329067
+      outSlope: 3.3329067
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 9
+      value: 20
+      inSlope: 5.812574
+      outSlope: 5.812574
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!95 &2641836189193748285
 Animator:
   serializedVersion: 7

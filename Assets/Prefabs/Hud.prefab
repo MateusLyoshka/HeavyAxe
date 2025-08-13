@@ -253,7 +253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 3029090763972644628, guid: 385c900ad1a0de543b6c6fac83760e3f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2d696986a756e409fa3e07c9f55fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillId: 3
 --- !u!114 &7130287720428837772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1531,6 +1532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2d696986a756e409fa3e07c9f55fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillId: 2
 --- !u!114 &1317083963647959194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2504,6 +2506,7 @@ GameObject:
   - component: {fileID: 8740810845381360416}
   - component: {fileID: 3938681515034506026}
   - component: {fileID: 6779711619946852437}
+  - component: {fileID: 5121276284800654252}
   m_Layer: 5
   m_Name: Skill1
   m_TagString: Untagged
@@ -2568,6 +2571,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5121276284800654252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453388367618549664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e5cb819abcbee94d9d4c1a6564ac4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7835522041164516203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2580,7 +2595,7 @@ GameObject:
   - component: {fileID: 3634989630389000057}
   - component: {fileID: 6890163853616258972}
   m_Layer: 5
-  m_Name: Q
+  m_Name: W
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2671,6 +2686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2d696986a756e409fa3e07c9f55fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillId: 1
 --- !u!1 &8074690320441322685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2797,7 +2813,7 @@ GameObject:
   - component: {fileID: 7853908289075875835}
   - component: {fileID: 5804639267427616725}
   m_Layer: 5
-  m_Name: C
+  m_Name: Q
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2837,6 +2853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2d696986a756e409fa3e07c9f55fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillId: 0
 --- !u!114 &5804639267427616725
 MonoBehaviour:
   m_ObjectHideFlags: 0

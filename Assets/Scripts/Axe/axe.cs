@@ -4,40 +4,38 @@ using System.Collections;
 
 public class Axe : MonoBehaviour
 {
-    public event Action OnAxeRotationStoped;
+    public event Action OnAttackStoped;
 
     // Axe var
     private Rigidbody2D rb;
+    [SerializeField] private AxeShadow axeShadow;
     private Animator _animator;
 
     // Full time 
-    private Vector2 axeToPivotDirection;
-    private float currentPivotDistance;
+    private Vector2 axeToPlayerDirection;
+    private float currentPlayerDistance;
 
     // OnRotating || full time 
-    private Vector3 lastPivotPosition;
-    private Vector2 lastPivotToAxeDirection;
-    private float pivotToAxeAngle, lastAxeToPivotAngle;
-    private float rotatingTimeElapsed, rotationDirection = 1;
-    private bool isRotating = false;
+    private Vector3 lastPlayerPosition;
+    private Vector2 lastPlayerToAxeDirection;
+    private float playerToAxeAngle, lastAxeToPlayerAngle;
+    private float rotatingTimeElapsed, rotationDirection;
 
     // Attacks 
     private float previousAngle, accumulatedAngle, attackFinalAngle;
     private bool canAttack;
-
-    // Speed and Damage
-    private Vector2 lastAxePosition;
+    private bool isAttacking;
 
     private PlayerControl playerScript;
     [SerializeField] private SkillManager skillManager;
     private Transform playerTransform;
 
     [SerializeField] private float axeWeight = 0.5f;
-    [SerializeField] private float axePullSpeed = 10f;
     [SerializeField] private float maxDistance = 4.5f;
-    private readonly float rotatingDuration = 1f;
     [SerializeField] private float minDistance = 2f;
     private readonly float timeBetweenRotations = 0.1f;
+    [SerializeField] private AnimationCurve axeSpeedAnimationCuve;
+    [SerializeField] private AnimationCurve axePullSpeedAnimationCuve;
 
     private int rotationInd;
     private RotationSkillData currentSkill;
@@ -45,6 +43,8 @@ public class Axe : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isAttacking = false;
+        rotationDirection = 1f;
         rb = GetComponent<Rigidbody2D>();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerScript = player.GetComponent<PlayerControl>();
@@ -57,12 +57,12 @@ public class Axe : MonoBehaviour
     void Update()
     {
         // Continuously calculate direction from axe to playerTransform.position
-        axeToPivotDirection = playerTransform.position - transform.position;
-        canAttack = currentPivotDistance > minDistance;
+        axeToPlayerDirection = playerTransform.position - transform.position;
+        canAttack = currentPlayerDistance > minDistance;
 
-        currentPivotDistance = axeToPivotDirection.magnitude;
+        currentPlayerDistance = axeToPlayerDirection.magnitude;
 
-        if (isRotating)
+        if (isAttacking)
         {
             AxeRotationCalculator();
         }
@@ -75,48 +75,45 @@ public class Axe : MonoBehaviour
 
     void AxeIsNotRotating()
     {
-        lastPivotPosition = playerTransform.position;
-        lastPivotToAxeDirection = transform.position - playerTransform.position;
-        // Debug.Log($"distancia do pivo pro machado: {lastPivotToAxeDirection}");
-        pivotToAxeAngle = Mathf.Atan2(lastPivotToAxeDirection.y, lastPivotToAxeDirection.x) * Mathf.Rad2Deg;
+        lastPlayerPosition = playerTransform.position;
+        lastPlayerToAxeDirection = transform.position - playerTransform.position;
+        // Debug.Log($"distancia do pivo pro machado: {lastPlayerToAxeDirection}");
+        playerToAxeAngle = Mathf.Atan2(lastPlayerToAxeDirection.y, lastPlayerToAxeDirection.x) * Mathf.Rad2Deg;
         PlayerAxePull();
-
     }
 
     void AxeRotationCalculator()
     {
-        float deltaAngle = Mathf.DeltaAngle(previousAngle, pivotToAxeAngle);
+        Debug.Log(lastPlayerToAxeDirection);
+        float deltaAngle = Mathf.DeltaAngle(previousAngle, playerToAxeAngle);
         accumulatedAngle += Mathf.Abs(deltaAngle);
-        previousAngle = pivotToAxeAngle;
-        // Adjust the rotation angle depending on rotation direction
-        if (rotationDirection == 1) pivotToAxeAngle -= ReturnRotationSpeed();
-        else pivotToAxeAngle += ReturnRotationSpeed();
-        // Debug.Log(pivotToAxeAngle);
+        previousAngle = playerToAxeAngle;
+        AxeRotationSpeedApply();
+        // Debug.Log(playerToAxeAngle);
         // Prevent overflow by flipping angle if it exceeds bounds
-        if ((pivotToAxeAngle <= -180f && rotationDirection == 1) || (pivotToAxeAngle >= 180f && rotationDirection == -1)) pivotToAxeAngle *= -1;
+        if ((playerToAxeAngle <= -180f && rotationDirection == 1) || (playerToAxeAngle >= 180f && rotationDirection == -1)) playerToAxeAngle *= -1;
 
         // Calculate the next position along the rotation arc using the fixed radius
-        float rad = pivotToAxeAngle * Mathf.Deg2Rad;
-        Vector2 offset = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * lastPivotToAxeDirection.magnitude;
-        Vector2 newPos = (Vector2)lastPivotPosition + offset;
+        float rad = playerToAxeAngle * Mathf.Deg2Rad;
+        Vector2 offset = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * lastPlayerToAxeDirection.magnitude;
+        Vector2 newPos = (Vector2)lastPlayerPosition + offset;
         rb.MovePosition(newPos);
 
         // Use the last playerTransform.position position before attack to adjust the axe angle
-        lastAxeToPivotAngle = Mathf.Atan2((lastPivotPosition - transform.position).y, (lastPivotPosition - transform.position).x) * Mathf.Rad2Deg;
-        rb.SetRotation(lastAxeToPivotAngle - 42f);
+        lastAxeToPlayerAngle = Mathf.Atan2((lastPlayerPosition - transform.position).y, (lastPlayerPosition - transform.position).x) * Mathf.Rad2Deg;
+        rb.SetRotation(lastAxeToPlayerAngle - 42f);
 
         // Check if the rotation should stop
         AxeRotationStopVerify();
     }
 
-    private float ReturnRotationSpeed()
+    void AxeRotationSpeedApply()
     {
-        // Calculate rotation progression using time and a power curve for acceleration
         rotatingTimeElapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(rotatingTimeElapsed / rotatingDuration);
-        float powt2 = Mathf.Pow(0.3f + t, 5f);
-
-        return powt2;
+        float deltaRotation = axeSpeedAnimationCuve.Evaluate(rotatingTimeElapsed) * Time.deltaTime;
+        // Adjust the rotation angle depending on rotation direction
+        if (rotationDirection == 1) playerToAxeAngle -= deltaRotation;
+        else playerToAxeAngle += deltaRotation;
     }
 
     void AxeRotationStopVerify()
@@ -126,13 +123,18 @@ public class Axe : MonoBehaviour
         {
             _animator.SetTrigger("rotationTrigger");
             rotationDirection *= -1;
-            // OnAxeRotationStoped.Invoke();
+            axeShadow.ShadowEndSwing();
             AxeStopResetVar();
 
             if (rotationInd + 1 < currentSkill.rotationSequence.Count)
             {
                 StartCoroutine(WaitAndAttack()); // espera 0.2s antes da próxima
                 rotationInd++;
+            }
+            else
+            {
+                OnAttackStoped.Invoke();
+                isAttacking = false;
             }
         }
     }
@@ -145,23 +147,26 @@ public class Axe : MonoBehaviour
 
     public void AxeAttackInit(RotationSkillData skill)
     {
-        rotationInd = 0;
-        currentSkill = skill;
-        AxeAttack();
+        if (!isAttacking && canAttack)
+        {
+            isAttacking = true;
+            rotationInd = 0;
+            currentSkill = skill;
+            AxeAttack();
+        }
     }
 
     void AxeAttack()
     {
         attackFinalAngle = currentSkill.rotationSequence[rotationInd];
+        axeShadow.ShadowStartSwing();
         _animator.SetTrigger("rotationTrigger");
-        isRotating = true;
-        previousAngle = pivotToAxeAngle;
+        previousAngle = playerToAxeAngle;
     }
 
     void AxeStopResetVar()
     {
         // Debug.Log($"mid speed {speedAtMidRotation}, peak speed, {speedAtMaxRotation}");
-        isRotating = false;
         rotatingTimeElapsed = 0f;
         accumulatedAngle = 0;
     }
@@ -177,6 +182,7 @@ public class Axe : MonoBehaviour
         // If the player is too far, move the axe toward them and apply weight
         if (axeToPlayerDirection.magnitude >= maxDistance)
         {
+            float axePullSpeed = axePullSpeedAnimationCuve.Evaluate(axeToPlayerDirection.magnitude);
             rb.MovePosition(rb.position + axePullSpeed * Time.deltaTime * axeToPlayerDirection);
             playerScript.ApplyAxeWeight(axeWeight);
         }

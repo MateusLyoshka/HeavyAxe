@@ -5,17 +5,25 @@ public class SingularSkill : MonoBehaviour
 {
     private Slider slider;
     private TimerText timerText;
+    private SkillIconSetter iconSetter;
 
     private float coolDown;
     private float timer;
     private bool timerStart;
 
+    public int skillId;
+
     void Start()
     {
         slider = GetComponent<Slider>();
         timerText = GetComponentInChildren<TimerText>();
-        StartTimer(4);
+        iconSetter = GetComponentInChildren<SkillIconSetter>();
 
+    }
+
+    public void SetSkillIcon(Sprite icon)
+    {
+        iconSetter.SetIcon(icon);
     }
 
     public void StartTimer(float time)

@@ -5,7 +5,8 @@ public class SkillManager : MonoBehaviour
 {
     public event Action<RotationSkillData> UseSkill;
 
-    [SerializeField] private RotationSkillData[] skills;
+    [SerializeField] private RotationSkillData[] skillsData;
+    [SerializeField] private SingularSkill[] hudSkillScript;
     private PlayerControl playerControl;
     private float[] skillsCoolDown;
 
@@ -14,14 +15,16 @@ public class SkillManager : MonoBehaviour
         GameObject playerControlObj = GameObject.FindGameObjectWithTag("Player");
         playerControl = playerControlObj.GetComponent<PlayerControl>();
         playerControl.SkillPressed += OnSkillButtonReceived;
-        skillsCoolDown = new float[skills.Length];
-        for (int i = 0; i < skills.Length; i++)
+        skillsCoolDown = new float[skillsData.Length];
+        for (int i = 0; i < skillsData.Length; i++)
         {
-            if (skills[i] != null) skillsCoolDown[i] = skills[i].coolDown;
+            if (skillsData[i].icon)
+            {
+                hudSkillScript[i].SetSkillIcon(skillsData[i].icon);
+            }
+            if (skillsData[i] != null) skillsCoolDown[i] = skillsData[i].coolDown;
             // Debug.Log(skillsCoolDown[i]);
-
         }
-
     }
 
     void Update()
@@ -37,12 +40,18 @@ public class SkillManager : MonoBehaviour
 
     void OnSkillButtonReceived(int index)
     {
-        if (skills[index] == null) return;
+        if (skillsData[index] == null) return;
         if (skillsCoolDown[index] <= 0)
         {
-            UseSkill.Invoke(skills[index]);
+            UseSkill.Invoke(skillsData[index]);
             // Debug.Log(skillsCoolDown[index]);
-            skillsCoolDown[index] = skills[index].coolDown;
+            skillsCoolDown[index] = skillsData[index].coolDown;
+            hudSkillScript[index].StartTimer(skillsCoolDown[index]);
         }
+    }
+
+    void AttackStoped()
+    {
+
     }
 }
