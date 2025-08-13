@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a51c59680cc6a4686e38d57f37c07f, type: 3}
   m_Name: a
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 8146060941921200126, guid: e8da662214e51a24f86aa93822a68a37, type: 3}
   name: 
   coolDown: 0
   damage: 0

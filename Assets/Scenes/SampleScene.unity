@@ -283,6 +283,10 @@ PrefabInstance:
       value: axe
       objectReference: {fileID: 0}
     - target: {fileID: 6582395465234980935, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
+      propertyPath: axe
+      value: 
+      objectReference: {fileID: 1333850357}
+    - target: {fileID: 6582395465234980935, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
       propertyPath: hudSkillScript
       value: 
       objectReference: {fileID: 1438953986}
@@ -301,11 +305,11 @@ PrefabInstance:
     - target: {fileID: 6582395465234980935, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
       propertyPath: 'skillsData.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 18d18a3f6bd85c7439a01619921fbbf0, type: 2}
+      objectReference: {fileID: 11400000, guid: cade99543a02e454b878c123e1a5ed1d, type: 2}
     - target: {fileID: 6582395465234980935, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
       propertyPath: 'skillsData.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: 6f9f5104041e3ad43bdd6245aedcd357, type: 2}
+      objectReference: {fileID: 11400000, guid: cade99543a02e454b878c123e1a5ed1d, type: 2}
     - target: {fileID: 6582395465234980935, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
       propertyPath: hudSkillScript.Array.size
       value: 4
@@ -606,6 +610,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4525785406606905052, guid: 1d3c29b6486351947bcd943cc3c43731, type: 3}
   m_PrefabInstance: {fileID: 3884593}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1333850357 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 222637292408349856, guid: 9b30c209544faa54795ceea1f6c00237, type: 3}
+  m_PrefabInstance: {fileID: 326998687}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5125489139ddf458523d7768b77e9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1438953986 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7853908289075875835, guid: 4bc5cf07c3b4c9544b94058ccf360f43, type: 3}

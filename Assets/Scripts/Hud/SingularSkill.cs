@@ -11,14 +11,11 @@ public class SingularSkill : MonoBehaviour
     private float timer;
     private bool timerStart;
 
-    public int skillId;
-
-    void Start()
+    void Awake()
     {
         slider = GetComponent<Slider>();
         timerText = GetComponentInChildren<TimerText>();
         iconSetter = GetComponentInChildren<SkillIconSetter>();
-
     }
 
     public void SetSkillIcon(Sprite icon)
