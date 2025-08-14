@@ -35,7 +35,13 @@ public class SkillManager : MonoBehaviour
 
     void Update()
     {
-
+        for (int i = 0; i < skillsData.Length; i++)
+        {
+            if (skillsCoolDown[i] >= 0)
+            {
+                skillsCoolDown[i] -= Time.deltaTime;
+            }
+        }
     }
 
     void OnSkillButtonReceived(int index)

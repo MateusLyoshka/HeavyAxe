@@ -1,50 +1,79 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class LevelBar : MonoBehaviour
 {
+    [Header("Experience")]
+    [SerializeField] AnimationCurve experienceCurve;
+
+    [SerializeField] private int firstLevelExperience;
+    private int currentLevel, totalExperience;
+    private float levelMultiplier, nextLevelExperience, experienceRemaining;
+
+    [Header("Interface")]
+    [SerializeField] StatusBarText levelText;
+
     private Slider slider;
-    private LevelText levelText;
-    public event Action OnMaxExp;
 
-    private int currentLevel;
-    private float currentExp;
-    private float levelUpExp;
-    public float nextLevelExpMultiplier;
+    void Start()
+    {
+        slider = GetComponent<Slider>();
+        currentLevel = 0;
+        experienceRemaining = 0;
+        totalExperience = 0;
+        nextLevelExperience = firstLevelExperience;
+        UpdateLevel();
+        SetLevelText();
+    }
 
-    // void Start()
-    // {
-    //     slider = GetComponent<Slider>();
-    //     levelText = GetComponentInChildren<LevelText>();
-    //     currentLevel = 0;
-    //     currentExp = 0;
-    //     levelUpExp = 20;
-    // }
+    void Update()
+    {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            AddExperience(5);
+            // Debug.Log("alo");
+            // Debug.Log(spaceValue);
+        }
 
-    // public void LevelBarStart(int currentLevel)
-    // {
-    //     slider.maxValue = 0;
-    //     levelUpExp = 20;
-    //     currentExp = 0;
-    //     slider.maxValue = levelUpExp;
-    //     slider.value = currentExp;
-    // }
+    }
 
-    // public void LevelUp(int level)
-    // {
-    //     currentLevel = level;
-    //     levelText.SetLevel(level);
-    //     slider.maxValue = levelUpExp * nextLevelExpMultiplier;
-    //     slider.value = 0;
-    // }
+    public void AddExperience(int amount)
+    {
+        totalExperience += amount;
+        slider.value = totalExperience;
+        CheckLevelUp();
+        SetLevelText();
+        // slider.value = (int)experienceCurve.Evaluate(totalExperience);
+    }
 
-    // public void AddExp(float exp)
-    // {
-    //     slider.value = exp;
-    //     if (currentExp == levelUpExp)
-    //     {
-    //         OnMaxExp.Invoke();
-    //     }
-    // }
+    void CheckLevelUp()
+    {
+        if (totalExperience >= nextLevelExperience)
+        {
+            currentLevel++;
+            UpdateLevel();
+        }
+    }
+
+    void UpdateLevel()
+    {
+        if (currentLevel != 0)
+        {
+            experienceRemaining = totalExperience - nextLevelExperience;
+        }
+        slider.value = experienceRemaining;
+        totalExperience = (int)experienceRemaining;
+        levelMultiplier = experienceCurve.Evaluate(currentLevel + 1);
+        nextLevelExperience = levelMultiplier * firstLevelExperience;
+        slider.maxValue = nextLevelExperience;
+    }
+
+    void SetLevelText()
+    {
+        string levelStatusString = totalExperience + "/" + (int)nextLevelExperience;
+        levelText.SetStatusText(levelStatusString);
+    }
+
 }

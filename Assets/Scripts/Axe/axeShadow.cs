@@ -16,7 +16,6 @@ public class AxeShadow : MonoBehaviour
     public void ShadowStartSwing()
     {
         _animator.SetTrigger("rotationTrigger");
-        Debug.Log("oi rotação");
     }
 
     public void ShadowEndSwing()

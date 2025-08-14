@@ -1162,6 +1162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5581393958917274555}
   - component: {fileID: 2741734963055040135}
+  - component: {fileID: 9108709651878304992}
   m_Layer: 5
   m_Name: LevelBar
   m_TagString: LevelBar
@@ -1242,6 +1243,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9108709651878304992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3499679791738522243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6250d904917ba764eb796e8197f7547c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextLevelExpMultiplier: 0
 --- !u!1 &4008031750904065939
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StatusBarText : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Text statusText;
+    void Awake()
     {
-        
+        statusText = GetComponent<Text>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetStatusText(string text)
     {
-        
+        statusText.text = text;
     }
 }
