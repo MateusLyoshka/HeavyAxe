@@ -6,6 +6,11 @@ public class PlayerStatusHud : MonoBehaviour
 {
     // private event Action OnPlayerDeath;
 
+    [Header("Experience")]
+    [Tooltip("Curve of multipliers per level")]
+    [SerializeField] private AnimationCurve experienceCurveMultiplier;
+    [SerializeField] private AnimationCurve healthCurveMultiplier;
+
     private HealthBar healtBar;
     private LevelBar levelBar;
 
@@ -17,7 +22,16 @@ public class PlayerStatusHud : MonoBehaviour
         healtBar = healthBarObj.GetComponent<HealthBar>();
         levelBar = levelBarObj.GetComponent<LevelBar>();
 
-        healtBar.HealthStart(currentLevel);
+        healtBar.HealthInit(healthCurveMultiplier, 10);
+        // Debug.Log(levelBar);
+        levelBar.LevelBarInit(currentLevel, experienceCurveMultiplier.Evaluate(currentLevel), 0, 23, experienceCurveMultiplier);
+        levelBar.levelChange += LevelUpdated;
         // levelBar.LevelBarStart(currentLevel);
+    }
+
+    void LevelUpdated(int newLevel)
+    {
+        healtBar.UpdateHealth(newLevel);
+        Debug.Log("level up");
     }
 }

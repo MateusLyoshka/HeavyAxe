@@ -3,27 +3,33 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Slider))]
 public class LevelBar : MonoBehaviour
 {
+    public event Action<int> levelChange;
     [Header("Experience")]
-    [SerializeField] AnimationCurve experienceCurve;
+    private AnimationCurve experienceCurve;
 
     [SerializeField] private int firstLevelExperience;
     private int currentLevel, totalExperience;
     private float levelMultiplier, nextLevelExperience, experienceRemaining;
 
     [Header("Interface")]
-    [SerializeField] StatusBarText levelText;
+    private Text levelText;
 
     private Slider slider;
 
-    void Start()
+    public void LevelBarInit(int currentLevel, float levelMultiplier, float experienceRemaining, int firstLevelExperience, AnimationCurve experienceCurve)
     {
         slider = GetComponent<Slider>();
-        currentLevel = 0;
-        experienceRemaining = 0;
-        totalExperience = 0;
+        levelText = GetComponentInChildren<Text>();
+        this.currentLevel = currentLevel;
+        this.levelMultiplier = levelMultiplier;
+        this.experienceRemaining = experienceRemaining;
+        this.firstLevelExperience = firstLevelExperience;
         nextLevelExperience = firstLevelExperience;
+        totalExperience = (int)experienceRemaining;
+        this.experienceCurve = experienceCurve;
         UpdateLevel();
         SetLevelText();
     }
@@ -33,8 +39,6 @@ public class LevelBar : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             AddExperience(5);
-            // Debug.Log("alo");
-            // Debug.Log(spaceValue);
         }
 
     }
@@ -53,6 +57,7 @@ public class LevelBar : MonoBehaviour
         if (totalExperience >= nextLevelExperience)
         {
             currentLevel++;
+            levelChange.Invoke(currentLevel);
             UpdateLevel();
         }
     }
@@ -73,7 +78,11 @@ public class LevelBar : MonoBehaviour
     void SetLevelText()
     {
         string levelStatusString = totalExperience + "/" + (int)nextLevelExperience;
-        levelText.SetStatusText(levelStatusString);
+        levelText.text = levelStatusString;
     }
 
+    public float ReturnExperienceRemaining()
+    {
+        return experienceRemaining;
+    }
 }
