@@ -8,11 +8,10 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private RotationSkillData[] skillsData;
     [SerializeField] private SingularSkill[] hudSkillScript;
     [SerializeField] private Axe axe;
-    private RotationSkillData currentRotationSkillOnExec;
-    private bool rotationOnExec;
     private int rotationSkillOnExecIndex;
     private PlayerControl playerControl;
     private float[] skillsCoolDown;
+    private bool startCoolDown = false;
 
     void Start()
     {
@@ -28,38 +27,40 @@ public class SkillManager : MonoBehaviour
             {
                 hudSkillScript[i].SetSkillIcon(skillsData[i].icon);
             }
-            if (skillsData[i] != null) skillsCoolDown[i] = skillsData[i].coolDown;
+            if (skillsData[i] != null) skillsCoolDown[i] = 0;
             // Debug.Log(skillsCoolDown[i]);
         }
     }
 
     void Update()
     {
-        for (int i = 0; i < skillsData.Length; i++)
+        if (!startCoolDown) return;
+        if (skillsCoolDown[rotationSkillOnExecIndex] >= 0)
         {
-            if (skillsCoolDown[i] >= 0)
-            {
-                skillsCoolDown[i] -= Time.deltaTime;
-            }
+            skillsCoolDown[rotationSkillOnExecIndex] -= Time.deltaTime;
         }
+        else if (skillsCoolDown[rotationSkillOnExecIndex] <= 0)
+        {
+            startCoolDown = false;
+        }
+
     }
 
     void OnSkillButtonReceived(int index)
     {
         if (skillsData[index] == null) return;
-        if (skillsCoolDown[index] <= 0)
+        if (skillsCoolDown[index] <= 0 && axe.AxePlayerCanAttack())
         {
             UseSkill.Invoke(skillsData[index]);
-            currentRotationSkillOnExec = skillsData[index];
-            rotationOnExec = true;
             rotationSkillOnExecIndex = index;
-            // Debug.Log(skillsCoolDown[index]);
             skillsCoolDown[index] = skillsData[index].coolDown;
+            Debug.Log(skillsCoolDown[index]);
         }
     }
 
     void AttackStoped()
     {
+        startCoolDown = true;
         hudSkillScript[rotationSkillOnExecIndex].StartTimer(skillsCoolDown[rotationSkillOnExecIndex]);
     }
 }

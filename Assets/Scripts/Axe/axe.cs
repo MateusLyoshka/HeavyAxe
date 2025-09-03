@@ -58,7 +58,7 @@ public class Axe : MonoBehaviour
     {
         // Continuously calculate direction from axe to playerTransform.position
         axeToPlayerDirection = playerTransform.position - transform.position;
-        canAttack = currentPlayerDistance > minDistance;
+
 
         currentPlayerDistance = axeToPlayerDirection.magnitude;
 
@@ -71,6 +71,11 @@ public class Axe : MonoBehaviour
             AxeIsNotRotating();
         }
         // UpdateSpeedCalculation();
+    }
+
+    public bool AxePlayerCanAttack()
+    {
+        return canAttack = currentPlayerDistance > minDistance;
     }
 
     void AxeIsNotRotating()
@@ -147,7 +152,7 @@ public class Axe : MonoBehaviour
 
     public void AxeAttackInit(RotationSkillData skill)
     {
-        if (!isAttacking && canAttack)
+        if (!isAttacking && AxePlayerCanAttack())
         {
             isAttacking = true;
             rotationInd = 0;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 2dbe48044ed87fb4cb7643ee45b396b3, type: 3}
   name: FullSpin
-  coolDown: 1
+  coolDown: 3
   damage: 80
   rotationSequence:
   - 180
